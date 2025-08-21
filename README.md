@@ -1,219 +1,219 @@
-# foobar2000 Automation для macOS
+# foobar2000 Automation for macOS
 
-Система автоматизации для настройки foobar2000 на macOS с профессиональными требованиями для управления музыкальной библиотекой и создания цифровых релизов.
+Automation system for configuring foobar2000 on macOS with professional requirements for music library management and digital release creation.
 
-## Возможности
+## Features
 
-- **Автоматическая установка** через Homebrew всех необходимых кодировщиков
-- **Профессиональная настройка** foobar2000 с оптимизацией для macOS
-- **Интеграция с macOS** - Spotlight, QuickLook, медиа-клавиши, уведомления
-- **Поддержка Apple Silicon** - нативная оптимизация для M1/M2/M3 чипов
-- **Гибкость профилей** - от минимальной до профессиональной конфигурации
-- **Массовая конвертация** - стабильная обработка больших коллекций файлов
-- **Fish Shell интеграция** - интерактивные команды и меню
+- **Automatic installation** via Homebrew of all necessary encoders
+- **Professional setup** of foobar2000 with macOS optimization
+- **macOS integration** - Spotlight, QuickLook, media keys, notifications
+- **Apple Silicon support** - native optimization for M1/M2/M3 chips
+- **Profile flexibility** - from minimal to professional configuration
+- **Batch conversion** - stable processing of large file collections
+- **Fish Shell integration** - interactive commands and menus
 
-## ⚠️ Последние исправления (2025-08-21)
+## Latest Fixes (2025-08-21)
 
-**Исправлены критические баги массовой конвертации:**
-- ✅ Стабильная работа интерактивного меню массовой конвертации  
-- ✅ Полный вывод прогресса LAME/FLAC/Opus при конвертации
-- ✅ Batch режим без интерактивных запросов
-- ✅ Обработка ошибок с graceful recovery
+**Critical batch conversion bugs fixed:**
+- Stable operation of interactive batch conversion menu
+- Full progress output for LAME/FLAC/Opus during conversion
+- Batch mode without interactive prompts
+- Error handling with graceful recovery
 
-Подробности в [`BUGFIXES.md`](./BUGFIXES.md)
+Details in [`BUGFIXES.md`](./BUGFIXES.md)
 
-## Системные требования
+## System Requirements
 
-- **macOS 11.0 Big Sur** или выше (рекомендуется macOS 13.0+)
-- **Homebrew** для установки кодировщиков
-- **2 GB** свободного места на диске
-- **Apple Silicon** (M1/M2/M3) или **Intel** процессор
-- Подключение к интернету для загрузки компонентов
+- **macOS 11.0 Big Sur** or higher (macOS 13.0+ recommended)
+- **Homebrew** for encoder installation
+- **2 GB** free disk space
+- **Apple Silicon** (M1/M2/M3) or **Intel** processor
+- Internet connection for component downloads
 
-## Быстрый старт
+## Quick Start
 
-### Установка
+### Installation
 
-1. **Установите Homebrew** (если еще не установлен):
+1. **Install Homebrew** (if not already installed):
 ```bash
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 ```
 
-2. **Клонируйте проект**:
+2. **Clone the project**:
 ```bash
 git clone https://github.com/your-repo/foobar2000-automation-macos.git
 cd foobar2000-automation-macos
 ```
 
-3. **Запустите автоматическую установку**:
+3. **Run automatic installation**:
 ```bash
-# Интерактивная установка (рекомендуется)
+# Interactive installation (recommended)
 ./scripts/install.sh --mode interactive
 
-# Быстрая установка со стандартным профилем
+# Quick installation with standard profile
 ./scripts/install.sh --profile standard --mode automatic
 ```
 
-### Профили конфигурации
+### Configuration Profiles
 
-- **minimal** - Базовые кодировщики (FLAC, MP3)
-- **standard** - Полный набор с Opus и утилитами анализа
-- **professional** - Максимальная конфигурация с FFmpeg и автоматизацией
-- **custom** - Пользовательские настройки
+- **minimal** - Basic encoders (FLAC, MP3)
+- **standard** - Full set with Opus and analysis utilities
+- **professional** - Maximum configuration with FFmpeg and automation
+- **custom** - User-defined settings
 
-## Архитектура и совместимость
+## Architecture and Compatibility
 
 ### Apple Silicon (M1/M2/M3)
-- ✅ **Нативная поддержка ARM64**
-- ✅ **Превосходная производительность** кодирования
-- ✅ **Энергоэффективность**
-- ✅ **Homebrew пути**: `/opt/homebrew/bin/`
+- Native ARM64 support
+- Superior encoding performance
+- Energy efficiency
+- Homebrew paths: `/opt/homebrew/bin/`
 
 ### Intel Mac
-- ✅ **Полная совместимость**
-- ✅ **Rosetta 2** при необходимости
-- ✅ **Homebrew пути**: `/usr/local/bin/`
+- Full compatibility
+- Rosetta 2 when needed
+- Homebrew paths: `/usr/local/bin/`
 
-## Структура проекта
+## Project Structure
 
 ```
 foobar2000-automation-macos/
-├── scripts/                    # Bash скрипты
-│   ├── install.sh             # Основной установочный скрипт
-│   ├── components-downloader.sh # Установка кодировщиков через Homebrew
-│   ├── config-generator.sh    # Генерация конфигураций
-│   └── validator.sh           # Проверка установки
-├── configs/                   # Конфигурационные файлы
-│   ├── presets/              # Пресеты кодировщиков для macOS
-│   ├── scripts/              # Masstagger скрипты (адаптированы для macOS)
-│   └── templates/            # Шаблоны интеграции с macOS
-├── resources/                # Ресурсные файлы
-│   ├── macos_components.json # Информация о компонентах Homebrew
-│   └── compatibility_macos.json # Матрица совместимости macOS
-└── docs/                     # Документация
+├── scripts/                    # Bash scripts
+│   ├── install.sh             # Main installation script
+│   ├── components-downloader.sh # Encoder installation via Homebrew
+│   ├── config-generator.sh    # Configuration generation
+│   └── validator.sh           # Installation validation
+├── configs/                   # Configuration files
+│   ├── presets/              # Encoder presets for macOS
+│   ├── scripts/              # Masstagger scripts (adapted for macOS)
+│   └── templates/            # macOS integration templates
+├── resources/                # Resource files
+│   ├── macos_components.json # Homebrew component information
+│   └── compatibility_macos.json # macOS compatibility matrix
+└── docs/                     # Documentation
     ├── troubleshooting_macos.md
     └── customization_macos.md
 ```
 
-## Поддерживаемые форматы и кодировщики
+## Supported Formats and Encoders
 
-### Lossless форматы
-- **FLAC** - через `flac` (Homebrew)
-  - Компрессия: уровни 0-8
-  - Метаданные: Vorbis Comments, CUE поддержка
-  - Unicode: полная поддержка
+### Lossless Formats
+- **FLAC** - via `flac` (Homebrew)
+  - Compression: levels 0-8
+  - Metadata: Vorbis Comments, CUE support
+  - Unicode: full support
 
-### Lossy форматы
-- **MP3** - через `lame` (Homebrew)
-  - Режимы: CBR, VBR (V0-V9), ABR
-  - Теги: ID3v1, ID3v2.3, ID3v2.4
-  - Качество: до 320 kbps
+### Lossy Formats
+- **MP3** - via `lame` (Homebrew)
+  - Modes: CBR, VBR (V0-V9), ABR
+  - Tags: ID3v1, ID3v2.3, ID3v2.4
+  - Quality: up to 320 kbps
 
-- **Opus** - через `opus-tools` (Homebrew)
-  - Битрейт: 6-510 kbps
-  - Режимы: VBR, CVBR, CBR
-  - Оптимизация: речь, музыка, низкая задержка
+- **Opus** - via `opus-tools` (Homebrew)
+  - Bitrate: 6-510 kbps
+  - Modes: VBR, CVBR, CBR
+  - Optimization: speech, music, low latency
 
-- **AAC/ALAC** - через `ffmpeg` (Homebrew)
-  - AAC: до 256 kbps
+- **AAC/ALAC** - via `ffmpeg` (Homebrew)
+  - AAC: up to 256 kbps
   - ALAC: lossless
-  - Контейнер: M4A
+  - Container: M4A
 
-## Использование скриптов
+## Script Usage
 
-### Установка компонентов
+### Component Installation
 
 ```bash
-# Установить все базовые кодировщики
+# Install all basic encoders
 ./scripts/components-downloader.sh -c flac,lame,opus
 
-# Установить все компоненты для профессионального использования
+# Install all components for professional use
 ./scripts/components-downloader.sh -c all
 
-# Показать доступные компоненты
+# Show available components
 ./scripts/components-downloader.sh
 ```
 
-### Генерация конфигурации
+### Configuration Generation
 
 ```bash
-# Создать стандартную конфигурацию
+# Create standard configuration
 ./scripts/config-generator.sh --profile standard
 
-# Профессиональная конфигурация с путями к библиотекам
+# Professional configuration with library paths
 ./scripts/config-generator.sh --profile professional --library-paths ~/Music,~/FLAC
 
-# Создать резервную копию перед изменениями
+# Create backup before changes
 ./scripts/config-generator.sh --profile standard --backup
 ```
 
-### Проверка установки
+### Installation Validation
 
 ```bash
-# Базовая проверка
+# Basic validation
 ./scripts/validator.sh
 
-# Детальная проверка с отчетом
+# Detailed validation with report
 ./scripts/validator.sh --detailed --report validation-report.json
 
-# Проверка конкретного профиля
+# Validate specific profile
 ./scripts/validator.sh --profile professional
 ```
 
-## Интеграция с macOS
+## macOS Integration
 
-### Системные возможности
-- **Файловые ассоциации** - автоматическая регистрация аудиоформатов
-- **Spotlight** - индексирование метаданных для поиска
-- **QuickLook** - предпросмотр аудиофайлов в Finder
-- **Notification Center** - уведомления о смене треков
-- **Медиа-клавиши** - управление через клавиатуру
-- **Dock интеграция** - индикация прогресса и меню
+### System Features
+- **File associations** - automatic audio format registration
+- **Spotlight** - metadata indexing for search
+- **QuickLook** - audio file preview in Finder
+- **Notification Center** - track change notifications
+- **Media keys** - keyboard control
+- **Dock integration** - progress indicators and menus
 
-### Пути конфигурации
+### Configuration Paths
 ```
-~/Library/Application Support/foobar2000/     # Основная конфигурация
-~/Library/Application Support/foobar2000/encoder_presets/   # Пресеты кодировщиков
-~/Library/Application Support/foobar2000/masstagger_scripts/ # Скрипты тегирования
-~/Library/Logs/foobar2000/                    # Логи приложения
+~/Library/Application Support/foobar2000/     # Main configuration
+~/Library/Application Support/foobar2000/encoder_presets/   # Encoder presets
+~/Library/Application Support/foobar2000/masstagger_scripts/ # Tagging scripts
+~/Library/Logs/foobar2000/                    # Application logs
 ```
 
-## Masstagger скрипты для macOS
+## Masstagger Scripts for macOS
 
-Специально адаптированы для особенностей macOS:
+Specially adapted for macOS specifics:
 
-- **Unicode совместимость** - правильная обработка специальных символов
-- **Файловая система** - совместимость с HFS+/APFS
-- **Finder интеграция** - оптимизированные структуры папок
+- **Unicode compatibility** - proper handling of special characters
+- **File system** - HFS+/APFS compatibility
+- **Finder integration** - optimized folder structures
 
-### Основные скрипты:
-- `AUTOTRACKNUMBER_MACOS` - нумерация треков
-- `GENRE_STANDARDIZE_MACOS` - стандартизация жанров
-- `FILENAME_STRUCTURE_MACOS` - структура файлов и папок
-- `REPLAYGAIN_AUTO_MACOS` - автоматический ReplayGain
+### Main Scripts:
+- `AUTOTRACKNUMBER_MACOS` - track numbering
+- `GENRE_STANDARDIZE_MACOS` - genre standardization
+- `FILENAME_STRUCTURE_MACOS` - file and folder structure
+- `REPLAYGAIN_AUTO_MACOS` - automatic ReplayGain
 
-## Пресеты кодировщиков
+## Encoder Presets
 
-### Рекомендуемые настройки качества:
+### Recommended Quality Settings:
 
-**Audiophile (максимальное качество):**
-- FLAC: `-8 -V` (максимальное сжатие)
+**Audiophile (maximum quality):**
+- FLAC: `-8 -V` (maximum compression)
 - MP3: `-V 0` (VBR ~245 kbps)
 - Opus: `--bitrate 256`
 
-**Standard (баланс):**
-- FLAC: `-5 -V` (быстрое сжатие)
+**Standard (balanced):**
+- FLAC: `-5 -V` (fast compression)
 - MP3: `-V 2` (VBR ~190 kbps)
 - Opus: `--bitrate 128`
 
-**Portable (мобильные устройства):**
-- FLAC: `-3` (быстрое)
+**Portable (mobile devices):**
+- FLAC: `-3` (fast)
 - MP3: `-V 4` (VBR ~165 kbps)
 - Opus: `--bitrate 96`
 
-## Производительность
+## Performance
 
-### Бенчмарки кодирования (примерные):
+### Encoding Benchmarks (approximate):
 
 **Apple Silicon M2 Max:**
 - FLAC level 8: ~15x realtime
@@ -225,113 +225,113 @@ foobar2000-automation-macos/
 - MP3 V0: ~15x realtime
 - Opus 192k: ~18x realtime
 
-## Устранение проблем
+## Troubleshooting
 
-### Частые проблемы:
+### Common Issues:
 
-**Homebrew не найден:**
+**Homebrew not found:**
 ```bash
-# Для Apple Silicon
+# For Apple Silicon
 echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> ~/.zshrc
 
-# Для Intel
+# For Intel
 echo 'eval "$(/usr/local/bin/brew shellenv)"' >> ~/.zshrc
 ```
 
-**Отказ в доступе к папкам:**
-- Предоставьте права доступа в System Preferences → Security & Privacy → Privacy → Files and Folders
+**Folder access denied:**
+- Grant access permissions in System Preferences → Security & Privacy → Privacy → Files and Folders
 
-**Кодировщики не найдены:**
+**Encoders not found:**
 ```bash
-# Проверить установку
+# Check installation
 brew list flac lame opus-tools ffmpeg
 
-# Переустановить если необходимо
+# Reinstall if necessary
 brew reinstall flac lame opus-tools
 ```
 
-## Автоматизация
+## Automation
 
-### Создание горячих папок:
+### Creating Hot Folders:
 ```bash
-# Автоматический импорт
+# Automatic import
 mkdir -p ~/Music/Import
-# Файлы в этой папке будут автоматически добавлены в библиотеку
+# Files in this folder will be automatically added to library
 
-# Автоматическая конвертация
+# Automatic conversion
 mkdir -p ~/Music/Convert
-# Файлы будут сконвертированы согласно заданным пресетам
+# Files will be converted according to preset settings
 ```
 
-### Планировщик задач (cron):
+### Task Scheduler (cron):
 ```bash
-# Автоматическое обновление компонентов каждое воскресенье в 2:00
+# Automatic component updates every Sunday at 2:00 AM
 0 2 * * 0 /opt/homebrew/bin/brew update && /opt/homebrew/bin/brew upgrade
 ```
 
-## Обновление системы
+## System Updates
 
 ```bash
-# Обновить все Homebrew компоненты
+# Update all Homebrew components
 brew update && brew upgrade
 
-# Обновить foobar2000
+# Update foobar2000
 brew upgrade --cask foobar2000
 
-# Проверить устаревшие пакеты
+# Check outdated packages
 brew outdated
 
-# Очистить кэш
+# Clear cache
 brew cleanup
 ```
 
-## Резервное копирование
+## Backup
 
 ```bash
-# Резервная копия конфигурации
+# Configuration backup
 cp -R ~/Library/Application\ Support/foobar2000 ~/Desktop/foobar2000-backup
 
-# Резервная копия пресетов кодировщиков
+# Encoder presets backup
 tar -czf ~/Desktop/encoder-presets-backup.tar.gz -C ~/Library/Application\ Support/foobar2000 encoder_presets
 
-# Восстановление
+# Restore
 cp -R ~/Desktop/foobar2000-backup ~/Library/Application\ Support/foobar2000
 ```
 
-## Кастомизация
+## Customization
 
-### Создание собственных пресетов:
+### Creating Custom Presets:
 ```bash
-# Редактировать пресеты кодировщиков
+# Edit encoder presets
 nano ~/Library/Application\ Support/foobar2000/encoder_presets/my_custom.preset
 
-# Создать собственные скрипты тегирования
+# Create custom tagging scripts
 nano ~/Library/Application\ Support/foobar2000/masstagger_scripts/MY_CUSTOM_SCRIPT.txt
 ```
 
-### Интеграция с другими приложениями:
-- **Automator** - создание workflow для обработки файлов
-- **AppleScript** - автоматизация через системные скрипты
-- **Shortcuts** - интеграция с приложением Shortcuts
+### Integration with Other Applications:
+- **Automator** - create workflows for file processing
+- **AppleScript** - automation via system scripts
+- **Shortcuts** - integration with Shortcuts app
 
-## Поддержка и развитие
+## Support and Development
 
-- **GitHub Issues** - сообщения об ошибках
-- **Discussions** - вопросы по использованию
-- **Wiki** - дополнительная документация
+- **GitHub Issues** - bug reports
+- **Discussions** - usage questions
+- **Wiki** - additional documentation
 
-При создании issue укажите:
-- Версию macOS
-- Архитектуру процессора (Apple Silicon/Intel)
-- Версию foobar2000
-- Логи выполнения скриптов
+When creating issues, include:
+- macOS version
+- Processor architecture (Apple Silicon/Intel)
+- foobar2000 version
+- Script execution logs
 
-## Лицензия
+## License
 
-MIT License - свободное использование и модификация.
+MIT License - free use and modification.
 
 ---
 
-**Совместимость**: macOS 11.0+, Apple Silicon + Intel  
-**Поддержка**: Актуальные версии macOS и foobar2000  
-**Обновления**: Регулярные обновления совместимости
+**Compatibility**: macOS 11.0+, Apple Silicon + Intel  
+**Support**: Current macOS and foobar2000 versions  
+**Updates**: Regular compatibility updates

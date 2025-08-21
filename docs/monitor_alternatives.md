@@ -1,48 +1,48 @@
-# Мониторинг файлов foobar2000
+# foobar2000 File Monitoring
 
-## Основное решение - bash скрипт
+## Primary Solution - bash Script
 
-**Файл:** `scripts/foobar_monitor.sh`
+**File:** `scripts/foobar_monitor.sh`
 
-### Преимущества:
-- Не требует дополнительных зависимостей
-- Работает из коробки на любом macOS
-- Два режима работы: fswatch и polling
-- Встроенное логирование
-- Управление через командную строку
+### Advantages:
+- No additional dependencies required
+- Works out-of-the-box on any macOS
+- Two operation modes: fswatch and polling
+- Built-in logging
+- Command-line management
 
-### Использование:
+### Usage:
 ```bash
-# Запуск мониторинга
+# Start monitoring
 bash ~/Library/foobar2000-v2/foobar_monitor.sh
 
-# Проверка статуса
+# Check status
 bash ~/Library/foobar2000-v2/foobar_monitor.sh --status
 
-# Остановка
+# Stop monitoring
 bash ~/Library/foobar2000-v2/foobar_monitor.sh --stop
 ```
 
-### Режимы работы:
+### Operation Modes:
 
-1. **С fswatch (рекомендуется):**
+1. **With fswatch (recommended):**
    ```bash
    brew install fswatch
    ```
-   - Мгновенная реакция на изменения
-   - Минимальное потребление ресурсов
-   - Использует системные события macOS
+   - Instant reaction to changes
+   - Minimal resource consumption
+   - Uses macOS system events
 
-2. **Polling режим:**
-   - Не требует дополнительных установок
-   - Проверка каждые 5 секунд
-   - Больше нагрузки на систему
+2. **Polling mode:**
+   - No additional installations required
+   - Check every 5 seconds
+   - Higher system load
 
-## Другие альтернативы
+## Other Alternatives
 
 ### 1. launchd + Folder Actions
 
-Автоматический запуск через системные службы macOS:
+Automatic launch via macOS system services:
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
@@ -68,14 +68,14 @@ bash ~/Library/foobar2000-v2/foobar_monitor.sh --stop
 
 ### 2. AppleScript + Folder Actions
 
-Создание Folder Action для автоматической обработки:
+Create Folder Action for automatic processing:
 
 ```applescript
 on adding folder items to this_folder after receiving added_items
     repeat with this_item in added_items
         set item_path to POSIX path of this_item
         
-        -- Проверка аудиоформата
+        -- Check audio format
         if item_path ends with ".flac" or item_path ends with ".mp3" or ¬
            item_path ends with ".wav" or item_path ends with ".m4a" then
             
@@ -88,25 +88,25 @@ on adding folder items to this_folder after receiving added_items
 end adding folder items to
 ```
 
-### 3. Hazel (коммерческое решение)
+### 3. Hazel (Commercial Solution)
 
-Если установлен Hazel:
-- Создать правило для папки `~/Music/Import`
-- Условие: файл соответствует аудиоформатам
-- Действие: открыть в foobar2000
+If Hazel is installed:
+- Create rule for `~/Music/Import` folder
+- Condition: file matches audio formats
+- Action: open in foobar2000
 
 ### 4. Automator Workflow
 
-Создание Automator workflow:
-1. Новый "Folder Action"
-2. Выбрать папку `~/Music/Import`
-3. Добавить действие "Filter Finder Items" (аудиофайлы)
-4. Добавить действие "Open Finder Items" (в foobar2000)
+Create Automator workflow:
+1. New "Folder Action"
+2. Select `~/Music/Import` folder
+3. Add "Filter Finder Items" action (audio files)
+4. Add "Open Finder Items" action (in foobar2000)
 
-## Сравнение решений
+## Solution Comparison
 
-| Решение | Установка | Ресурсы | Скорость | Надежность |
-|---------|-----------|---------|----------|------------|
+| Solution | Installation | Resources | Speed | Reliability |
+|----------|-------------|-----------|-------|-------------|
 | Bash + fswatch | ★★★★☆ | ★★★★★ | ★★★★★ | ★★★★★ |
 | Bash polling | ★★★★★ | ★★★☆☆ | ★★★☆☆ | ★★★★☆ |
 | launchd | ★★☆☆☆ | ★★★★★ | ★★★★★ | ★★★★★ |
@@ -114,16 +114,16 @@ end adding folder items to
 | Hazel | ★★★★★ | ★★★★☆ | ★★★★★ | ★★★★★ |
 | Automator | ★★★★☆ | ★★★★☆ | ★★★★☆ | ★★★☆☆ |
 
-## Рекомендация
+## Recommendation
 
-Для большинства пользователей рекомендуется **bash скрипт** с установкой fswatch:
+For most users, the **bash script** with fswatch installation is recommended:
 
 ```bash
-# Установка fswatch
+# Install fswatch
 brew install fswatch
 
-# Запуск мониторинга
+# Start monitoring
 bash ~/Library/foobar2000-v2/foobar_monitor.sh
 ```
 
-Это обеспечивает оптимальный баланс между простотой установки, производительностью и надежностью.
+This provides the optimal balance between installation simplicity, performance, and reliability.

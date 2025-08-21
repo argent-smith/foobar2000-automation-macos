@@ -1,108 +1,108 @@
-# Исправления багов foobar2000 macOS Automation
+# foobar2000 macOS Automation Bug Fixes
 
-## Версия: 2025-08-21
+## Version: 2025-08-21
 
-### Исправлены критические проблемы массовой конвертации
+### Critical Batch Conversion Issues Fixed
 
-#### Проблема 1: Вылет скрипта при массовой конвертации
-**Файлы**: `foobar_menu_fish.sh`, `convert_with_external_advanced.sh`
+#### Issue 1: Script Crash During Batch Conversion
+**Files**: `foobar_menu_fish.sh`, `convert_with_external_advanced.sh`
 
-**Симптомы**:
-- Интерактивное меню вылетало после выбора файлов для конвертации
-- Скрипт завершался без обработки файлов
-- Отсутствовал вывод прогресса утилит конвертации
+**Symptoms**:
+- Interactive menu crashed after selecting files for conversion
+- Script terminated without processing files
+- No progress output from conversion utilities
 
-**Причины**:
-1. `set -euo pipefail` вызывал немедленный выход при любой ошибке
-2. Process substitution `< <(find ...)` с `while read` был нестабилен
-3. Интерактивные запросы в batch режиме блокировали выполнение
-4. Небезопасная обработка массивов с циклами
+**Causes**:
+1. `set -euo pipefail` caused immediate exit on any error
+2. Process substitution `< <(find ...)` with `while read` was unstable
+3. Interactive prompts in batch mode blocked execution
+4. Unsafe array handling with loops
 
-**Исправления**:
-1. **Добавлен флаг `--batch`** в `convert_with_external_advanced.sh`
-   - Автоматическое удаление резервных копий
-   - Отключение запросов о добавлении в foobar2000
+**Fixes**:
+1. **Added `--batch` flag** in `convert_with_external_advanced.sh`
+   - Automatic backup deletion
+   - Disabled foobar2000 addition prompts
    
-2. **Заменена логика поиска файлов** в `foobar_menu_fish.sh`
-   - Убрана проблемная конструкция `while IFS= read -r -d '' file; done < <(...)`
-   - Использован безопасный command substitution с heredoc
+2. **Replaced file search logic** in `foobar_menu_fish.sh`
+   - Removed problematic `while IFS= read -r -d '' file; done < <(...)` construct
+   - Used safe command substitution with heredoc
    
-3. **Добавлена обработка ошибок**
-   - Временное отключение `set -e` для критических участков
-   - Явный контроль exit codes
-   - Graceful recovery при ошибках
+3. **Added error handling**
+   - Temporary disabling of `set -e` for critical sections
+   - Explicit exit code control
+   - Graceful recovery on errors
 
-4. **Исправлена передача параметров**
-   - `foobar_menu_fish.sh` теперь передает флаг `--batch`
-   - Корректная обработка неинтерактивного режима
+4. **Fixed parameter passing**
+   - `foobar_menu_fish.sh` now passes `--batch` flag
+   - Correct non-interactive mode handling
 
-#### Проблема 2: Отсутствие вывода прогресса конвертации
-**Файл**: `foobar_menu_fish.sh:274`
+#### Issue 2: Missing Conversion Progress Output
+**File**: `foobar_menu_fish.sh:274`
 
-**Симптомы**:
-- Пользователь не видел прогресс работы LAME/FLAC/Opus
-- Отсутствовала информация о битрейте и времени
+**Symptoms**:
+- User couldn't see LAME/FLAC/Opus progress
+- Missing bitrate and timing information
 
-**Исправления**:
-- Убрано перенаправление `>/dev/null 2>&1`
-- Теперь весь вывод утилит конвертации виден пользователю
+**Fixes**:
+- Removed `>/dev/null 2>&1` redirection
+- All conversion utility output now visible to user
 
-#### Проблема 3: Нестабильная работа batch режима
-**Файлы**: `convert_with_external_advanced.sh:283-296, 332-346`
+#### Issue 3: Unstable Batch Mode Operation
+**Files**: `convert_with_external_advanced.sh:283-296, 332-346`
 
-**Симптомы**:
-- Интерактивные запросы блокировали массовую конвертацию
-- Неопределенное поведение в автоматическом режиме
+**Symptoms**:
+- Interactive prompts blocked batch conversion
+- Undefined behavior in automatic mode
 
-**Исправления**:
-- Добавлена переменная `BATCH_MODE` с парсингом флага `--batch`
-- Логика `[[ "$BATCH_MODE" == "true" || ! -t 0 ]]` для определения режима
-- Автоматические ответы в batch режиме
+**Fixes**:
+- Added `BATCH_MODE` variable with `--batch` flag parsing
+- Logic `[[ "$BATCH_MODE" == "true" || ! -t 0 ]]` for mode detection
+- Automatic responses in batch mode
 
-### Результат
-✅ **Массовая конвертация работает стабильно**  
-✅ **Полный вывод прогресса** LAME/FLAC/Opus  
-✅ **Batch режим** без интерактивных запросов  
-✅ **Обработка ошибок** с graceful recovery  
-✅ **Поддержка всех форматов**: FLAC, MP3 V0/320/Commercial, Opus  
+### Results
+- **Batch conversion works stably**
+- **Full progress output** for LAME/FLAC/Opus
+- **Batch mode** without interactive prompts
+- **Error handling** with graceful recovery
+- **All format support**: FLAC, MP3 V0/320/Commercial, Opus
 
-### Тестирование
-Протестировано на:
+### Testing
+Tested on:
 - **macOS**: Darwin 24.6.0 (Apple Silicon)
 - **Shell**: Fish + Bash
-- **Файлы**: 4 MP3 файла (48kHz → 44.1kHz, 192 kbps CBR)
-- **Режимы**: suffix, replace
-- **Форматы**: mp3_commercial
+- **Files**: 4 MP3 files (48kHz → 44.1kHz, 192 kbps CBR)
+- **Modes**: suffix, replace
+- **Formats**: mp3_commercial
 
-Все тесты прошли успешно с полным выводом прогресса и корректной обработкой файлов.
+All tests passed successfully with full progress output and correct file handling.
 
-## Инструкции по применению
+## Installation Instructions
 
-### Для новых установок
+### For New Installations
 ```bash
 ./scripts/install.sh --profile professional --mode automatic
 ```
 
-### Для обновления существующих установок
+### For Existing Installation Updates
 ```bash
-# Скопировать исправленные файлы
+# Copy fixed files
 cp scripts/foobar_menu_fish.sh ~/Library/foobar2000-v2/
 cp scripts/convert_with_external_advanced.sh ~/Library/foobar2000-v2/
 cp scripts/foobar2000_fish_functions.fish ~/Library/foobar2000-v2/
 
-# Перезагрузить Fish функции
+# Reload Fish functions
 fish -c "source ~/Library/foobar2000-v2/foobar2000_fish_functions.fish"
 ```
 
-### Использование
+### Usage
 ```bash
-# Запуск интерактивного меню
+# Launch interactive menu
 foobar-menu
 
-# Выбор опции 5 - Массовая конвертация папки
-# Все исправления применяются автоматически
+# Select option 5 - Batch Convert Folder
+# All fixes are applied automatically
 ```
 
-## История изменений
-- **2025-08-21**: Исправлены критические баги массовой конвертации
-- **2025-08-20**: Первоначальная версия с известными проблемами
+## Change History
+- **2025-08-21**: Fixed critical batch conversion bugs
+- **2025-08-20**: Initial version with known issues

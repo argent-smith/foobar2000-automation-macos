@@ -1,203 +1,203 @@
-# Changelog - foobar2000 Automation для macOS
+# Changelog - foobar2000 Automation for macOS
 
-Все важные изменения в проекте будут документированы в этом файле.
+All notable changes to this project will be documented in this file.
 
-Формат основан на [Keep a Changelog](https://keepachangelog.com/ru/1.0.0/),
-и этот проект придерживается [Семантического версионирования](https://semver.org/lang/ru/).
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
-### Планируется
-- Поддержка автоматических обновлений через Homebrew
-- GUI приложение для управления профилями
-- Интеграция с MusicBrainz для автоматического тегирования
-- Поддержка DSD и других high-res форматов
+### Planned
+- Automatic update support via Homebrew
+- GUI application for profile management
+- MusicBrainz integration for automatic tagging
+- Support for DSD and other high-res formats
 
 ## [1.0.1] - 2025-08-21
 
-### Исправлено - Критические баги массовой конвертации
-- **Исправлен вылет скрипта** при массовой конвертации файлов
-- **Восстановлен вывод прогресса** LAME/FLAC/Opus во время конвертации
-- **Устранены интерактивные запросы** в batch режиме массовой конвертации
-- **Улучшена обработка ошибок** с graceful recovery
+### Fixed - Critical Batch Conversion Bugs
+- **Fixed script crash** during batch file conversion
+- **Restored progress output** for LAME/FLAC/Opus during conversion
+- **Eliminated interactive prompts** in batch conversion mode
+- **Improved error handling** with graceful recovery
 
-#### Технические исправления
-- **Заменена логика поиска файлов** - убрана нестабильная process substitution
-- **Добавлен флаг --batch** для неинтерактивного режима
-- **Исправлена обработка массивов** с отключением set -e для критических участков
-- **Убрано перенаправление >/dev/null** которое скрывало вывод конвертации
+#### Technical Fixes
+- **Replaced file search logic** - removed unstable process substitution
+- **Added --batch flag** for non-interactive mode
+- **Fixed array handling** with disabled set -e for critical sections
+- **Removed >/dev/null redirection** that hid conversion output
 
-#### Затронутые файлы
-- `scripts/foobar_menu_fish.sh` - исправлен основной цикл массовой конвертации
-- `scripts/convert_with_external_advanced.sh` - добавлен batch режим
-- `scripts/foobar2000_fish_functions.fish` - обновлены функции
-- `scripts/foobar_integration_setup.sh` - улучшена интеграция
+#### Affected Files
+- `scripts/foobar_menu_fish.sh` - fixed main batch conversion loop
+- `scripts/convert_with_external_advanced.sh` - added batch mode
+- `scripts/foobar2000_fish_functions.fish` - updated functions
+- `scripts/foobar_integration_setup.sh` - improved integration
 
-#### Результат
-✅ Массовая конвертация теперь работает стабильно  
-✅ Полный вывод прогресса с битрейтом и временем  
-✅ Поддержка всех форматов: FLAC, MP3 (V0/320/Commercial), Opus  
-✅ Автоматическое управление резервными копиями при замещении файлов
+#### Results
+- Batch conversion now works stably
+- Full progress output with bitrate and timing
+- Support for all formats: FLAC, MP3 (V0/320/Commercial), Opus
+- Automatic backup management during file replacement
 
-### Добавлено
-- Документ `BUGFIXES.md` с детальным описанием исправлений
-- Улучшенная диагностика и отладка в скриптах
-- Безопасная обработка Unicode символов в именах файлов
+### Added
+- `BUGFIXES.md` document with detailed fix descriptions
+- Improved diagnostics and debugging in scripts
+- Safe Unicode character handling in filenames
 
 ## [1.0.0] - 2024-01-15
 
-### Добавлено
-- Первый стабильный релиз для macOS
-- Полная адаптация Windows версии для macOS
-- Поддержка Apple Silicon (M1/M2/M3) и Intel процессоров
-- Автоматическая установка через Homebrew
-- Три профиля установки: minimal, standard, professional
+### Added
+- First stable release for macOS
+- Full adaptation of Windows version for macOS
+- Apple Silicon (M1/M2/M3) and Intel processor support
+- Automatic installation via Homebrew
+- Three installation profiles: minimal, standard, professional
 
-#### Основные скрипты
-- `install.sh` - основной установочный скрипт с интерактивным и автоматическим режимами
-- `components-downloader.sh` - автоматическая установка кодировщиков через Homebrew
-- `config-generator.sh` - генерация конфигураций для различных профилей
-- `validator.sh` - проверка корректности установки и настройки
+#### Main Scripts
+- `install.sh` - main installation script with interactive and automatic modes
+- `components-downloader.sh` - automatic encoder installation via Homebrew
+- `config-generator.sh` - configuration generation for various profiles
+- `validator.sh` - installation and configuration validation
 
-#### Поддерживаемые кодировщики
-- **FLAC** (1.4.3) - lossless кодирование с уровнями сжатия 0-8
-- **LAME** (3.100) - MP3 кодирование с поддержкой CBR/VBR/ABR
-- **Opus** (0.2) - современный lossy кодировщик
-- **FFmpeg** (6.1) - универсальный мультимедиа фреймворк
-- **MediaInfo** (23.11) - анализ метаданных
-- **tag** (1.1.1) - редактирование аудио тегов
+#### Supported Encoders
+- **FLAC** (1.4.3) - lossless encoding with compression levels 0-8
+- **LAME** (3.100) - MP3 encoding with CBR/VBR/ABR support
+- **Opus** (0.2) - modern lossy encoder
+- **FFmpeg** (6.1) - universal multimedia framework
+- **MediaInfo** (23.11) - metadata analysis
+- **tag** (1.1.1) - audio tag editing
 
-#### Интеграция с macOS
-- Файловые ассоциации для аудиоформатов
-- Поддержка Spotlight для поиска метаданных
-- QuickLook предпросмотр аудиофайлов
-- Notification Center уведомления
-- Поддержка медиа-клавиш
-- Dock интеграция с прогрессом
+#### macOS Integration
+- File associations for audio formats
+- Spotlight support for metadata search
+- QuickLook audio file preview
+- Notification Center notifications
+- Media key support
+- Dock integration with progress
 
-#### Конфигурационные файлы
-- Пресеты кодировщиков адаптированные для macOS
-- Masstagger скрипты с поддержкой Unicode
-- Шаблоны для интеграции с системными службами macOS
-- JSON файлы совместимости для различных версий macOS
+#### Configuration Files
+- Encoder presets adapted for macOS
+- Masstagger scripts with Unicode support
+- Templates for macOS system service integration
+- JSON compatibility files for various macOS versions
 
-#### Документация
-- Подробное руководство по установке
-- Руководство по устранению проблем
-- Руководство по кастомизации
-- Руководство по оптимизации производительности
-- Матрица совместимости macOS версий
+#### Documentation
+- Detailed installation guide
+- Troubleshooting guide
+- Customization guide
+- Performance optimization guide
+- macOS version compatibility matrix
 
-### Изменено по сравнению с Windows версией
-- Использование Homebrew вместо прямых загрузок
-- Адаптация путей для macOS файловой системы
-- Оптимизация для Apple Silicon архитектуры
-- Замена Windows-специфичных компонентов на macOS аналоги
-- Интеграция с системными службами macOS
+### Changed from Windows Version
+- Use Homebrew instead of direct downloads
+- Adapted paths for macOS filesystem
+- Optimization for Apple Silicon architecture
+- Replaced Windows-specific components with macOS equivalents
+- Integration with macOS system services
 
-### Исправлено
-- Проблемы с Unicode путями на macOS
-- Корректная обработка пробелов в именах файлов
-- Определение архитектуры процессора (Intel/Apple Silicon)
-- Правильные пути к Homebrew для разных архитектур
+### Fixed
+- Unicode path issues on macOS
+- Correct handling of spaces in filenames
+- Processor architecture detection (Intel/Apple Silicon)
+- Proper Homebrew paths for different architectures
 
-### Безопасность
-- Валидация всех загружаемых компонентов
-- Проверка подписей Homebrew пакетов
-- Совместимость с macOS Gatekeeper
-- Поддержка System Integrity Protection (SIP)
+### Security
+- Validation of all downloaded components
+- Homebrew package signature verification
+- macOS Gatekeeper compatibility
+- System Integrity Protection (SIP) support
 
 ## [0.9.0] - 2024-01-01
 
-### Добавлено
-- Начальная адаптация для macOS
-- Базовая поддержка Homebrew установки
-- Тестирование на Apple Silicon
+### Added
+- Initial macOS adaptation
+- Basic Homebrew installation support
+- Apple Silicon testing
 
-### Изменено
-- Переработка скриптов для bash совместимости
-- Адаптация путей для macOS
+### Changed
+- Reworked scripts for bash compatibility
+- Adapted paths for macOS
 
-## Планы развития
+## Development Roadmap
 
-### Версия 1.1.0
-- Поддержка дополнительных форматов (DSD, MQA)
-- Автоматическое обновление конфигураций
-- Расширенная интеграция с Finder
-- Поддержка iCloud синхронизации настроек
+### Version 1.1.0
+- Additional format support (DSD, MQA)
+- Automatic configuration updates
+- Extended Finder integration
+- iCloud settings synchronization support
 
-### Версия 1.2.0
-- GUI приложение для управления
-- Плагин архитектура для расширений
-- Автоматическое тегирование через MusicBrainz
-- Batch processing с прогресс индикацией
+### Version 1.2.0
+- GUI management application
+- Plugin architecture for extensions
+- Automatic tagging via MusicBrainz
+- Batch processing with progress indication
 
-### Версия 2.0.0
-- Полная переработка архитектуры
-- Поддержка streaming сервисов
-- Интеграция с Apple Music/iTunes
-- Machine Learning для автоматической обработки
+### Version 2.0.0
+- Complete architecture redesign
+- Streaming service support
+- Apple Music/iTunes integration
+- Machine Learning for automatic processing
 
-## Совместимость
+## Compatibility
 
-### Поддерживаемые версии macOS
-- macOS 14.0 Sonoma ✅ (рекомендуется)
-- macOS 13.0 Ventura ✅ (рекомендуется)  
-- macOS 12.0 Monterey ✅
-- macOS 11.0 Big Sur ⚠️ (минимальная)
-- macOS 10.15 Catalina ❌ (не поддерживается)
+### Supported macOS Versions
+- macOS 14.0 Sonoma (recommended)
+- macOS 13.0 Ventura (recommended)
+- macOS 12.0 Monterey
+- macOS 11.0 Big Sur (minimum)
+- macOS 10.15 Catalina (not supported)
 
-### Поддерживаемые архитектуры
-- Apple Silicon (M1/M2/M3) ✅ (оптимизировано)
-- Intel x86_64 ✅ (полная поддержка)
+### Supported Architectures
+- Apple Silicon (M1/M2/M3) (optimized)
+- Intel x86_64 (full support)
 
-### Версии foobar2000
-- foobar2000 v2.1 ✅ (тестировано)
-- foobar2000 v2.0 ✅ (совместимо)
+### foobar2000 Versions
+- foobar2000 v2.1 (tested)
+- foobar2000 v2.0 (compatible)
 
-## Участие в разработке
+## Contributing
 
-### Как сообщить об ошибке
-1. Проверьте [существующие issues](https://github.com/your-repo/foobar2000-automation-macos/issues)
-2. Создайте новый issue с подробным описанием
-3. Приложите диагностическую информацию:
+### How to Report a Bug
+1. Check [existing issues](https://github.com/your-repo/foobar2000-automation-macos/issues)
+2. Create a new issue with detailed description
+3. Include diagnostic information:
    ```bash
-   # Системная информация
+   # System information
    sw_vers
    uname -m
    
-   # Версии компонентов  
+   # Component versions
    brew --version
    brew list --versions flac lame opus-tools
    
-   # Логи выполнения
+   # Execution logs
    ./scripts/validator.sh --detailed
    ```
 
-### Как предложить улучшение
-1. Опишите предлагаемую функциональность
-2. Объясните, как это улучшит пользовательский опыт
-3. Предоставьте примеры использования
+### How to Suggest Improvements
+1. Describe the proposed functionality
+2. Explain how it improves user experience
+3. Provide usage examples
 
-### Участие в разработке
-1. Fork репозитория
-2. Создайте feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit изменения (`git commit -m 'Add amazing feature'`)
-4. Push в branch (`git push origin feature/amazing-feature`)
-5. Откройте Pull Request
+### Contributing to Development
+1. Fork the repository
+2. Create feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit changes (`git commit -m 'Add amazing feature'`)
+4. Push to branch (`git push origin feature/amazing-feature`)
+5. Open Pull Request
 
-## Лицензия
+## License
 
-Этот проект распространяется под лицензией MIT. Подробности в файле [LICENSE](LICENSE).
+This project is distributed under the MIT License. See [LICENSE](LICENSE) file for details.
 
-## Благодарности
+## Acknowledgments
 
-- Команде разработчиков foobar2000 за отличный аудиоплеер
-- Сообществу Homebrew за удобную систему пакетов macOS
-- Всем контрибьюторам и тестировщикам проекта
+- foobar2000 development team for the excellent audio player
+- Homebrew community for the convenient macOS package system
+- All contributors and testers of the project
 
 ---
 
-**Статус проекта:** Активная разработка  
-**Поддержка:** macOS 11.0+, Apple Silicon + Intel  
-**Лицензия:** MIT
+**Project Status:** Active development  
+**Support:** macOS 11.0+, Apple Silicon + Intel  
+**License:** MIT
