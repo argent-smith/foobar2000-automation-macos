@@ -231,13 +231,56 @@ perform_conversion() {
             fi
             ;;
         flac_commercial)
-            log_info "Команда: flac -4 -V --force --sample-rate=44100 --bps=24 --preserve-modtime --keep-foreign-metadata -o \"$output\" \"$input\""
-            if "$HOMEBREW_PREFIX/bin/flac" -4 -V --force --sample-rate=44100 --bps=24 --preserve-modtime --keep-foreign-metadata -o "$output" "$input" 2>&1 | tee -a "$LOG_FILE"; then
-                log_success "FLAC Commercial конвертация завершена"
-                return 0
+            # FLAC Commercial: Ensure 44.1kHz sample rate for commercial distribution
+            if command -v "$HOMEBREW_PREFIX/bin/ffmpeg" >/dev/null 2>&1; then
+                # Check if source is already 44.1kHz
+                local source_rate
+                source_rate=$(mediainfo --Inform="Audio;%SamplingRate%" "$input" 2>/dev/null || echo "unknown")
+                
+                if [[ "$source_rate" == "44100" ]]; then
+                    log_info "Source already at 44.1kHz, encoding directly to FLAC"
+                    log_info "Команда: flac -4 -V --preserve-modtime --keep-foreign-metadata -T \"ARTIST=%artist%\" -T \"TITLE=%title%\" -T \"ALBUM=%album%\" -T \"DATE=%date%\" -T \"GENRE=%genre%\" -T \"TRACKNUMBER=%tracknumber%\" -T \"ALBUMARTIST=%albumartist%\" -T \"TOTALTRACKS=%totaltracks%\" -o \"$output\" \"$input\""
+                    if "$HOMEBREW_PREFIX/bin/flac" -4 -V --preserve-modtime --keep-foreign-metadata -T "ARTIST=%artist%" -T "TITLE=%title%" -T "ALBUM=%album%" -T "DATE=%date%" -T "GENRE=%genre%" -T "TRACKNUMBER=%tracknumber%" -T "ALBUMARTIST=%albumartist%" -T "TOTALTRACKS=%totaltracks%" -o "$output" "$input" 2>&1 | tee -a "$LOG_FILE"; then
+                        log_success "FLAC Commercial конвертация завершена"
+                        return 0
+                    else
+                        log_error "Ошибка FLAC Commercial конвертации"
+                        return 1
+                    fi
+                else
+                    # Resample to 44.1kHz first
+                    local temp_wav="$TEMP_DIR/$(basename "$input" .${input##*.})_44k.wav"
+                    
+                    log_info "Step 1: Resampling from ${source_rate}Hz to 44.1kHz with FFmpeg"
+                    log_info "Команда: ffmpeg -i \"$input\" -ar 44100 -c:a pcm_s24le \"$temp_wav\""
+                    if "$HOMEBREW_PREFIX/bin/ffmpeg" -i "$input" -ar 44100 -c:a pcm_s24le "$temp_wav" -y 2>&1 | tee -a "$LOG_FILE"; then
+                        log_info "Step 2: Encoding to FLAC"
+                        log_info "Команда: flac -4 -V --preserve-modtime --keep-foreign-metadata -T \"ARTIST=%artist%\" -T \"TITLE=%title%\" -T \"ALBUM=%album%\" -T \"DATE=%date%\" -T \"GENRE=%genre%\" -T \"TRACKNUMBER=%tracknumber%\" -T \"ALBUMARTIST=%albumartist%\" -T \"TOTALTRACKS=%totaltracks%\" -o \"$output\" \"$temp_wav\""
+                        if "$HOMEBREW_PREFIX/bin/flac" -4 -V --preserve-modtime --keep-foreign-metadata -T "ARTIST=%artist%" -T "TITLE=%title%" -T "ALBUM=%album%" -T "DATE=%date%" -T "GENRE=%genre%" -T "TRACKNUMBER=%tracknumber%" -T "ALBUMARTIST=%albumartist%" -T "TOTALTRACKS=%totaltracks%" -o "$output" "$temp_wav" 2>&1 | tee -a "$LOG_FILE"; then
+                            rm -f "$temp_wav"
+                            log_success "FLAC Commercial конвертация завершена"
+                            return 0
+                        else
+                            rm -f "$temp_wav"
+                            log_error "Ошибка FLAC кодирования"
+                            return 1
+                        fi
+                    else
+                        log_error "Ошибка ресемплинга FFmpeg"
+                        return 1
+                    fi
+                fi
             else
-                log_error "Ошибка FLAC Commercial конвертации"
-                return 1
+                # Fallback: encode directly without resampling if FFmpeg not available
+                log_warning "FFmpeg not available, encoding without resampling"
+                log_info "Команда: flac -4 -V --preserve-modtime --keep-foreign-metadata -T \"ARTIST=%artist%\" -T \"TITLE=%title%\" -T \"ALBUM=%album%\" -T \"DATE=%date%\" -T \"GENRE=%genre%\" -T \"TRACKNUMBER=%tracknumber%\" -T \"ALBUMARTIST=%albumartist%\" -T \"TOTALTRACKS=%totaltracks%\" -o \"$output\" \"$input\""
+                if "$HOMEBREW_PREFIX/bin/flac" -4 -V --preserve-modtime --keep-foreign-metadata -T "ARTIST=%artist%" -T "TITLE=%title%" -T "ALBUM=%album%" -T "DATE=%date%" -T "GENRE=%genre%" -T "TRACKNUMBER=%tracknumber%" -T "ALBUMARTIST=%albumartist%" -T "TOTALTRACKS=%totaltracks%" -o "$output" "$input" 2>&1 | tee -a "$LOG_FILE"; then
+                    log_success "FLAC Commercial конвертация завершена"
+                    return 0
+                else
+                    log_error "Ошибка FLAC Commercial конвертации"
+                    return 1
+                fi
             fi
             ;;
         mp3_v0)
@@ -335,6 +378,9 @@ if perform_conversion "$INPUT_FILE" "$OUTPUT_FILE" "$OUTPUT_FORMAT"; then
     else
         FINAL_OUTPUT="$OUTPUT_FILE"
     fi
+    
+    # Ensure FINAL_OUTPUT is an absolute path for AppleScript compatibility
+    FINAL_OUTPUT=$(realpath "$FINAL_OUTPUT" 2>/dev/null || echo "$(cd "$(dirname "$FINAL_OUTPUT")" && pwd)/$(basename "$FINAL_OUTPUT")")
     
     # Получение информации о результирующем файле
     if [[ -f "$FINAL_OUTPUT" ]]; then

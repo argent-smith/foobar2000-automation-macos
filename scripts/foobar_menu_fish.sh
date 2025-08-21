@@ -180,7 +180,10 @@ add_to_foobar() {
     
     echo -e "${YELLOW}Добавление в foobar2000...${NC}"
     
-    if osascript -e "tell application \"foobar2000\" to open POSIX file \"$path\"" 2>/dev/null; then
+    # Convert to absolute path for AppleScript compatibility
+    abs_path=$(realpath "$path" 2>/dev/null || echo "$(cd "$(dirname "$path")" 2>/dev/null && pwd)/$(basename "$path")")
+    
+    if osascript -e "tell application \"foobar2000\" to open POSIX file \"$abs_path\"" 2>/dev/null; then
         echo -e "${GREEN}✓ Успешно добавлено${NC}"
     else
         echo -e "${RED}✗ Ошибка добавления${NC}"

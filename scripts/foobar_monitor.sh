@@ -51,7 +51,11 @@ add_to_foobar2000() {
     
     log_info "Добавление файла в foobar2000: $(basename "$file_path")"
     
-    if osascript -e "tell application \"foobar2000\" to open POSIX file \"$file_path\"" 2>/dev/null; then
+    # Convert to absolute path for AppleScript compatibility
+    local abs_path
+    abs_path=$(realpath "$file_path" 2>/dev/null || echo "$(cd "$(dirname "$file_path")" 2>/dev/null && pwd)/$(basename "$file_path")")
+    
+    if osascript -e "tell application \"foobar2000\" to open POSIX file \"$abs_path\"" 2>/dev/null; then
         log_success "✓ Успешно добавлен: $(basename "$file_path")"
         return 0
     else

@@ -27,7 +27,14 @@ function foobar-add
         return 1
     end
     
-    osascript -e "tell application \"foobar2000\" to open POSIX file \"$argv[1]\""
+    # Convert to absolute path for AppleScript compatibility
+    set absolute_path (realpath "$argv[1]" 2>/dev/null; or begin
+        set file_dir (dirname "$argv[1]")
+        set file_name (basename "$argv[1]")
+        echo (cd "$file_dir" 2>/dev/null && pwd; or echo "$file_dir")/"$file_name"
+    end)
+    
+    osascript -e "tell application \"foobar2000\" to open POSIX file \"$absolute_path\""
 end
 
 function foobar-quality
@@ -81,13 +88,4 @@ alias fb2k-monitor='foobar-monitor'
 alias fb2k-add='foobar-add'
 alias fb2k-quality='foobar-quality'
 
-echo "foobar2000 Fish functions loaded!"
-echo "Available commands:"
-echo "  foobar-menu      - Interactive menu"
-echo "  foobar-convert   - Convert file"
-echo "  foobar-monitor   - Import monitoring"
-echo "  foobar-add       - Add to foobar2000"
-echo "  foobar-quality   - Quality analysis"
-echo "  foobar-batch-convert - Batch conversion"
-echo
-echo "Aliases: fb2k-menu, fb2k-convert, fb2k-monitor, fb2k-add, fb2k-quality"
+# foobar2000 Fish functions loaded silently
