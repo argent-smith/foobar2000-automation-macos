@@ -2,6 +2,12 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## Language Guidelines
+
+- All documentation, code comments, script interface and commit messages should be in English
+- Never use emojis in code or commit messages
+- Use clear, professional English without colloquialisms
+
 ## Project Overview
 
 This is a macOS automation system for foobar2000 professional audio library management and digital release creation. The project provides:
