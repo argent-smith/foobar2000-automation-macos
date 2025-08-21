@@ -113,9 +113,9 @@ start_monitoring() {
     echo -e "${YELLOW}Нажмите Ctrl+C для остановки${NC}"
     echo
     
-    python3 "$FB2K_CONFIG_DIR/foobar_monitor.py" || {
+    bash "$FB2K_CONFIG_DIR/foobar_monitor.sh" || {
         echo -e "${RED}Ошибка запуска мониторинга${NC}"
-        echo "Убедитесь, что установлен watchdog: pip3 install --user watchdog"
+        echo "Для лучшей производительности установите: brew install fswatch"
     }
 }
 
@@ -311,7 +311,7 @@ show_statistics() {
     echo -e "${CYAN}Конфигурация:${NC}"
     echo "  Папка конфигурации: $config_dir"
     echo "  Скрипт конвертации: $([ -x "$CONVERT_SCRIPT" ] && echo "✓ Доступен" || echo "✗ Не найден")"
-    echo "  Мониторинг: $([ -f "$config_dir/foobar_monitor.py" ] && echo "✓ Настроен" || echo "✗ Не настроен")"
+    echo "  Мониторинг: $([ -f "$config_dir/foobar_monitor.sh" ] && echo "✓ Настроен" || echo "✗ Не настроен")"
     echo
     
     echo -e "${CYAN}Кодировщики:${NC}"
@@ -358,7 +358,7 @@ show_help() {
     
     echo -e "${CYAN}Доступные команды:${NC}"
     echo "  $CONVERT_SCRIPT <файл> <формат>"
-    echo "  python3 $FB2K_CONFIG_DIR/foobar_monitor.py"
+    echo "  bash $FB2K_CONFIG_DIR/foobar_monitor.sh"
     echo
     
     echo -e "${CYAN}Форматы конвертации:${NC}"

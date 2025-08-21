@@ -18,7 +18,7 @@ end
 function foobar-monitor
     echo "Запуск мониторинга папки ~/Music/Import"
     echo "Нажмите Ctrl+C для остановки"
-    python3 ~/Library/foobar2000-v2/foobar_monitor.py
+    bash ~/Library/foobar2000-v2/foobar_monitor.sh
 end
 
 function foobar-add
