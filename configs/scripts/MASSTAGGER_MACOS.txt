@@ -1,0 +1,392 @@
+// Masstagger скрипты для macOS
+// Адаптированы для особенностей файловой системы macOS и Unicode поддержки
+
+//=============================================================================
+// АВТОМАТИЧЕСКАЯ НУМЕРАЦИЯ ТРЕКОВ ДЛЯ MACOS
+//=============================================================================
+// Учитывает особенности HFS+/APFS и правильно обрабатывает Unicode
+
+$set(tracknumber,%_tracknumber%)
+
+// Определение общего количества треков если отсутствует
+$if($not(%totaltracks%),
+    $set(totaltracks,%_total_tracks%)
+)
+
+// Форматирование номера трека с ведущими нулями для больших коллекций
+$if($greater(%totaltracks%,999),
+    $set(tracknumber,$padleft(%_tracknumber%,4,'0')),
+    $if($greater(%totaltracks%,99),
+        $set(tracknumber,$padleft(%_tracknumber%,3,'0')),
+        $if($greater(%totaltracks%,9),
+            $set(tracknumber,$padleft(%_tracknumber%,2,'0')),
+            $set(tracknumber,%_tracknumber%)
+        )
+    )
+)
+
+// Специальная обработка для мультидисковых релизов
+$if(%discnumber%,
+    $if($greater(%totaldiscs%,1),
+        // Для многодисковых: номер диска + номер трека
+        $set(tracknumber,%discnumber%.$padleft(%_tracknumber%,2,'0')),
+        // Если диск один, используем обычную нумерацию
+        $set(tracknumber,$padleft(%_tracknumber%,2,'0'))
+    )
+)
+
+//=============================================================================
+// СТАНДАРТИЗАЦИЯ ЖАНРОВ ДЛЯ MACOS
+//=============================================================================
+// Использует Unicode-совместимые названия и учитывает локализацию
+
+// Основные электронные жанры
+$replace(%genre%,electronic,Electronic)
+$replace(%genre%,Electronic Music,Electronic)
+$replace(%genre%,electronica,Electronic)
+$replace(%genre%,ambient,Ambient)
+$replace(%genre%,Ambient Music,Ambient)
+$replace(%genre%,techno,Techno)
+$replace(%genre%,house,House)
+$replace(%genre%,House Music,House)
+$replace(%genre%,trance,Trance)
+$replace(%genre%,progressive trance,Progressive Trance)
+
+// Drum & Bass и производные
+$replace(%genre%,drum & bass,Drum & Bass)
+$replace(%genre%,drum and bass,Drum & Bass)
+$replace(%genre%,drum'n'bass,Drum & Bass)
+$replace(%genre%,dnb,Drum & Bass)
+$replace(%genre%,d&b,Drum & Bass)
+$replace(%genre%,liquid dnb,Liquid Drum & Bass)
+$replace(%genre%,neurofunk,Neurofunk)
+
+// Дабстеп и басс музыка
+$replace(%genre%,dubstep,Dubstep)
+$replace(%genre%,brostep,Brostep)
+$replace(%genre%,future bass,Future Bass)
+$replace(%genre%,trap,Trap)
+$replace(%genre%,bass,Bass Music)
+
+// Рок и его подвиды
+$replace(%genre%,rock,Rock)
+$replace(%genre%,rock music,Rock)
+$replace(%genre%,alternative,Alternative)
+$replace(%genre%,alternative rock,Alternative Rock)
+$replace(%genre%,alt rock,Alternative Rock)
+$replace(%genre%,indie,Indie)
+$replace(%genre%,indie rock,Indie Rock)
+$replace(%genre%,punk,Punk)
+$replace(%genre%,punk rock,Punk Rock)
+$replace(%genre%,post-rock,Post-Rock)
+$replace(%genre%,prog rock,Progressive Rock)
+$replace(%genre%,progressive rock,Progressive Rock)
+
+// Метал жанры
+$replace(%genre%,metal,Metal)
+$replace(%genre%,heavy metal,Heavy Metal)
+$replace(%genre%,death metal,Death Metal)
+$replace(%genre%,black metal,Black Metal)
+$replace(%genre%,power metal,Power Metal)
+$replace(%genre%,progressive metal,Progressive Metal)
+$replace(%genre%,prog metal,Progressive Metal)
+$replace(%genre%,doom metal,Doom Metal)
+$replace(%genre%,thrash metal,Thrash Metal)
+
+// Поп и мейнстрим
+$replace(%genre%,pop,Pop)
+$replace(%genre%,pop music,Pop)
+$replace(%genre%,synthpop,Synthpop)
+$replace(%genre%,electropop,Electropop)
+$replace(%genre%,indie pop,Indie Pop)
+$replace(%genre%,dance pop,Dance Pop)
+
+// R&B и хип-хоп
+$replace(%genre%,r&b,R&B)
+$replace(%genre%,rnb,R&B)
+$replace(%genre%,r'n'b,R&B)
+$replace(%genre%,hip hop,Hip-Hop)
+$replace(%genre%,hip-hop,Hip-Hop)
+$replace(%genre%,hiphop,Hip-Hop)
+$replace(%genre%,rap,Rap)
+$replace(%genre%,gangsta rap,Gangsta Rap)
+$replace(%genre%,conscious rap,Conscious Rap)
+
+// Классическая музыка и джаз
+$replace(%genre%,classical,Classical)
+$replace(%genre%,classical music,Classical)
+$replace(%genre%,baroque,Baroque)
+$replace(%genre%,romantic,Romantic)
+$replace(%genre%,contemporary classical,Contemporary Classical)
+$replace(%genre%,jazz,Jazz)
+$replace(%genre%,jazz music,Jazz)
+$replace(%genre%,smooth jazz,Smooth Jazz)
+$replace(%genre%,bebop,Bebop)
+$replace(%genre%,swing,Swing)
+$replace(%genre%,blues,Blues)
+$replace(%genre%,delta blues,Delta Blues)
+$replace(%genre%,chicago blues,Chicago Blues)
+
+// Фолк и кантри
+$replace(%genre%,folk,Folk)
+$replace(%genre%,folk music,Folk)
+$replace(%genre%,indie folk,Indie Folk)
+$replace(%genre%,country,Country)
+$replace(%genre%,country music,Country)
+$replace(%genre%,bluegrass,Bluegrass)
+$replace(%genre%,americana,Americana)
+
+// Регги и мировая музыка
+$replace(%genre%,reggae,Reggae)
+$replace(%genre%,dub,Dub)
+$replace(%genre%,ska,Ska)
+$replace(%genre%,world,World Music)
+$replace(%genre%,world music,World Music)
+$replace(%genre%,ethnic,Ethnic)
+
+// Специальные категории
+$replace(%genre%,soundtrack,Soundtrack)
+$replace(%genre%,ost,Soundtrack)
+$replace(%genre%,film score,Film Score)
+$replace(%genre%,game music,Game Music)
+$replace(%genre%,video game music,Game Music)
+$replace(%genre%,chiptune,Chiptune)
+$replace(%genre%,8-bit,Chiptune)
+$replace(%genre%,8bit,Chiptune)
+$replace(%genre%,keygen music,Keygen)
+
+// Исправление часто встречающихся ошибок
+$replace(%genre%,Electornic,Electronic)
+$replace(%genre%,Elctronic,Electronic)
+$replace(%genre%,Electronc,Electronic)
+$replace(%genre%,Clasical,Classical)
+$replace(%genre%,Classicl,Classical)
+$replace(%genre%,Progresive,Progressive)
+$replace(%genre%,Progresive,Progressive)
+
+// Удаление лишних пробелов и нормализация разделителей
+$replace(%genre%, / ,/)
+$replace(%genre%, /,/)
+$replace(%genre%,/ ,/)
+$replace(%genre%, & ,/)
+$replace(%genre%, and ,/)
+$trim(%genre%)
+
+//=============================================================================
+// СТРУКТУРА ФАЙЛОВ ДЛЯ MACOS
+//=============================================================================
+// Совместимость с HFS+/APFS, Finder и Unicode
+
+// Определение исполнителя альбома с приоритетом albumartist
+$if(%albumartist%,
+    $set(_folder_artist,%albumartist%),
+    $set(_folder_artist,%artist%)
+)
+
+// Обработка различных артистов и компиляций
+$if($or($eql($lower(%_folder_artist%),various artists),
+       $eql($lower(%_folder_artist%),va),
+       $eql($lower(%_folder_artist%),various),
+       $eql($lower(%_folder_artist%),compilation)),
+    $set(_folder_artist,Various Artists)
+)
+
+// Очистка от символов, проблематичных в macOS
+// Используем Unicode-аналоги для сохранения читаемости
+$set(_folder_artist,$replace(%_folder_artist%,:, –))      // Em dash вместо двоеточия
+$set(_folder_artist,$replace(%_folder_artist%,/,∕))       // Unicode division slash
+$set(_folder_artist,$replace(%_folder_artist%,\,∖))      // Unicode reverse solidus
+$set(_folder_artist,$replace(%_folder_artist%,?,？))      // Unicode question mark
+$set(_folder_artist,$replace(%_folder_artist%,*,✱))       // Unicode asterisk
+$set(_folder_artist,$replace(%_folder_artist%,<,‹))       // Unicode less-than
+$set(_folder_artist,$replace(%_folder_artist%,>,›))       // Unicode greater-than
+$set(_folder_artist,$replace(%_folder_artist%,|,｜))      // Unicode pipe
+$set(_folder_artist,$replace(%_folder_artist%,",″))       // Unicode double quote
+
+// Определение года с проверкой валидности
+$if(%date%,
+    $if($greater($len(%date%),4),
+        $set(_folder_year,$left(%date%,4)),
+        $set(_folder_year,%date%)
+    ),
+    $set(_folder_year,Unknown)
+)
+
+// Валидация года (должен быть между 1900 и текущим годом + 5)
+$if($and($greater($_folder_year,1899),$less($_folder_year,2030)),
+    // Год корректный, оставляем как есть
+    ,
+    // Год некорректный, устанавливаем Unknown
+    $set(_folder_year,Unknown)
+)
+
+// Обработка названия альбома
+$if(%album%,
+    $set(_folder_album,%album%),
+    $set(_folder_album,Unknown Album)
+)
+
+// Очистка названия альбома (те же правила что и для артиста)
+$set(_folder_album,$replace(%_folder_album%,:, –))
+$set(_folder_album,$replace(%_folder_album%,/,∕))
+$set(_folder_album,$replace(%_folder_album%,\,∖))
+$set(_folder_album,$replace(%_folder_album%,?,？))
+$set(_folder_album,$replace(%_folder_album%,*,✱))
+$set(_folder_album,$replace(%_folder_album%,<,‹))
+$set(_folder_album,$replace(%_folder_album%,>,›))
+$set(_folder_album,$replace(%_folder_album%,|,｜))
+$set(_folder_album,$replace(%_folder_album%,",″))
+
+// Специальная обработка для мультидисковых релизов
+$if(%discnumber%,
+    $if($greater(%totaldiscs%,1),
+        $set(_folder_album,%_folder_album% [Disc %discnumber%])
+    )
+)
+
+// Форматирование номера трека с учетом общего количества
+$if(%tracknumber%,
+    $if(%totaltracks%,
+        $if($greater(%totaltracks%,99),
+            $set(_track_number,$padleft(%tracknumber%,3,'0')),
+            $if($greater(%totaltracks%,9),
+                $set(_track_number,$padleft(%tracknumber%,2,'0')),
+                $set(_track_number,%tracknumber%)
+            )
+        ),
+        $set(_track_number,$padleft(%tracknumber%,2,'0'))
+    ),
+    $set(_track_number,00)
+)
+
+// Обработка названия трека
+$if(%title%,
+    $set(_track_title,%title%),
+    $set(_track_title,%filename%)
+)
+
+// Очистка названия трека
+$set(_track_title,$replace(%_track_title%,:, –))
+$set(_track_title,$replace(%_track_title%,/,∕))
+$set(_track_title,$replace(%_track_title%,\,∖))
+$set(_track_title,$replace(%_track_title%,?,？))
+$set(_track_title,$replace(%_track_title%,*,✱))
+$set(_track_title,$replace(%_track_title%,<,‹))
+$set(_track_title,$replace(%_track_title%,>,›))
+$set(_track_title,$replace(%_track_title%,|,｜))
+$set(_track_title,$replace(%_track_title%,",″))
+
+// Основные структуры файлов
+$if($eql(%_folder_artist%,Various Artists),
+    // Для компиляций: добавляем исполнителя в название трека
+    $set(_filename_template,Compilations/[%_folder_year%] %_folder_album%/%_track_number%. %artist% – %_track_title%),
+    // Обычная структура
+    $set(_filename_template,%_folder_artist%/[%_folder_year%] %_folder_album%/%_track_number%. %_track_title%)
+)
+
+// Альтернативные структуры для разных нужд
+// По жанрам (раскомментируйте если нужно)
+// $set(_genre_structure,%genre%/%_folder_artist%/[%_folder_year%] %_folder_album%/%_track_number%. %_track_title%)
+
+// Плоская структура (все в одной папке по исполнителям)
+$set(_flat_structure,%_folder_artist%/%_track_number%. %_track_title%)
+
+// Структура по десятилетиям
+$if($greater($int(%_folder_year%),1900),
+    $set(_decade,$left(%_folder_year%,3)0s),
+    $set(_decade,Unknown Era)
+)
+$set(_decade_structure,%_decade%/%_folder_artist%/[%_folder_year%] %_folder_album%/%_track_number%. %_track_title%)
+
+// Проверка длины пути (macOS ограничение 1024 символа для полного пути)
+$if($greater($len(%_filename_template%),200),
+    // Сокращенная версия для очень длинных путей
+    $set(_short_artist,$left(%_folder_artist%,20))
+    $set(_short_album,$left(%_folder_album%,30))
+    $set(_short_title,$left(%_track_title%,40))
+    $set(_filename_template,%_short_artist%/[%_folder_year%] %_short_album%/%_track_number%. %_short_title%)
+)
+
+// Финальная очистка и нормализация пробелов
+$set(_filename_template,$replace(%_filename_template%,  , ))  // Двойные пробелы в одинарные
+$set(_filename_template,$trim(%_filename_template%))
+
+// Установка результата
+$set(filename_template,%_filename_template%)
+
+// Дополнительные поля для организации
+$set(folder_artist,%_folder_artist%)
+$set(folder_album,%_folder_album%)
+$set(folder_year,%_folder_year%)
+$set(track_number_formatted,%_track_number%)
+
+//=============================================================================
+// ОБРАБОТКА REPLAYGAIN ДЛЯ MACOS
+//=============================================================================
+// Подготовка к пакетному расчету ReplayGain с учетом особенностей macOS
+
+$if($not(%replaygain_track_gain%),
+    $set(_needs_replaygain,1)
+    $set(_rg_status,Required)
+)
+
+// Проверяем наличие альбомного ReplayGain
+$if($not(%replaygain_album_gain%),
+    $set(_needs_album_replaygain,1)
+    $set(_rg_album_status,Required)
+)
+
+// Проверяем целостность существующих данных
+$if(%replaygain_track_gain%,
+    $if($or($strchr(%replaygain_track_gain%,dB),$strchr(%replaygain_track_gain%,db)),
+        $set(_rg_status,Valid),
+        // Некорректный формат
+        $set(_needs_replaygain,1)
+        $set(_rg_status,Invalid_Format)
+    )
+)
+
+// Группировка для пакетной обработки
+$if(%_needs_replaygain%,
+    $set(_rg_group,%albumartist% – %album%)
+    $set(_rg_format,%_extension%)
+    
+    // Приоритет в зависимости от формата
+    $if($strchr(%_extension%,flac),
+        $set(_rg_priority,High),
+        $if($strchr(%_extension%,mp3),
+            $set(_rg_priority,Medium),
+            $set(_rg_priority,Low)
+        )
+    )
+)
+
+// Проверка на клиппинг
+$if(%replaygain_track_peak%,
+    $if($greater($replace(%replaygain_track_peak%,,),1.0),
+        $set(_clipping_risk,High)
+        $set(comment,%comment% [Clipping Risk]),
+        $set(_clipping_risk,None)
+    )
+)
+
+//=============================================================================
+// ПРИМЕЧАНИЯ ПО ИСПОЛЬЗОВАНИЮ
+//=============================================================================
+
+// 1. Все скрипты оптимизированы для Unicode и файловой системы macOS
+// 2. Используются Unicode-аналоги проблематичных символов для сохранения читаемости
+// 3. Поддерживается как HFS+ так и APFS файловая система
+// 4. Длина путей ограничена для совместимости
+// 5. Все структуры совместимы с Finder и Spotlight
+
+// Примеры результирующих структур:
+// Pink Floyd/[1973] The Dark Side of the Moon/01. Speak to Me
+// Various Artists/[1995] Now That's What I Call Music! 32/03. Oasis – Wonderwall
+// Electronic/Deadmau5/[2009] For Lack of a Better Name/05. Strobe
+
+// Для применения скриптов:
+// 1. Выберите файлы в foobar2000
+// 2. Откройте Masstagger (Ctrl+M)
+// 3. Скопируйте нужный блок скрипта
+// 4. Примените к выбранным файлам

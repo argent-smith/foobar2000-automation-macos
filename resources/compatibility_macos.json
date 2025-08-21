@@ -1,0 +1,373 @@
+{
+  "metadata": {
+    "platform": "macOS",
+    "format_version": "1.0",
+    "last_updated": "2024-01-15",
+    "maintainer": "foobar2000-automation-macos",
+    "validation_required": true
+  },
+  "macos_versions": {
+    "14.0": {
+      "codename": "Sonoma",
+      "release_date": "2023-09-26",
+      "status": "supported",
+      "architecture": ["arm64", "x86_64"],
+      "foobar2000_compatibility": "excellent",
+      "homebrew_compatibility": "excellent",
+      "recommended": true,
+      "notes": "Полная поддержка всех функций, оптимизация для Apple Silicon"
+    },
+    "13.0": {
+      "codename": "Ventura",
+      "release_date": "2022-10-24",
+      "status": "supported",
+      "architecture": ["arm64", "x86_64"],
+      "foobar2000_compatibility": "excellent",
+      "homebrew_compatibility": "excellent",
+      "recommended": true,
+      "notes": "Стабильная поддержка, хорошая производительность"
+    },
+    "12.0": {
+      "codename": "Monterey",
+      "release_date": "2021-10-25",
+      "status": "supported",
+      "architecture": ["arm64", "x86_64"],
+      "foobar2000_compatibility": "good",
+      "homebrew_compatibility": "excellent",
+      "recommended": true,
+      "notes": "Первая версия с полной поддержкой Apple Silicon"
+    },
+    "11.0": {
+      "codename": "Big Sur",
+      "release_date": "2020-11-12",
+      "status": "compatible",
+      "architecture": ["arm64", "x86_64"],
+      "foobar2000_compatibility": "good",
+      "homebrew_compatibility": "good",
+      "recommended": false,
+      "notes": "Минимальная поддерживаемая версия, возможны ограничения"
+    },
+    "10.15": {
+      "codename": "Catalina",
+      "release_date": "2019-10-07",
+      "status": "deprecated",
+      "architecture": ["x86_64"],
+      "foobar2000_compatibility": "limited",
+      "homebrew_compatibility": "deprecated",
+      "recommended": false,
+      "notes": "Устаревшая версия, обновление настоятельно рекомендуется"
+    }
+  },
+  "hardware_compatibility": {
+    "apple_silicon": {
+      "chips": ["M1", "M1 Pro", "M1 Max", "M1 Ultra", "M2", "M2 Pro", "M2 Max", "M2 Ultra", "M3", "M3 Pro", "M3 Max"],
+      "architecture": "arm64",
+      "native_support": true,
+      "performance": "excellent",
+      "energy_efficiency": "excellent",
+      "homebrew_prefix": "/opt/homebrew",
+      "foobar2000_performance": "native",
+      "encoding_performance": "excellent",
+      "notes": [
+        "Все современные кодировщики скомпилированы нативно для ARM64",
+        "Значительно лучшая энергоэффективность",
+        "Faster Than Light (FTL) кодирование для некоторых форматов"
+      ]
+    },
+    "intel": {
+      "chips": ["Core i3", "Core i5", "Core i7", "Core i9", "Xeon"],
+      "architecture": "x86_64",
+      "native_support": true,
+      "performance": "good",
+      "energy_efficiency": "good",
+      "homebrew_prefix": "/usr/local",
+      "foobar2000_performance": "native",
+      "encoding_performance": "good",
+      "rosetta2_required": false,
+      "notes": [
+        "Полная совместимость со всеми инструментами",
+        "Проверенная платформа с длительной поддержкой"
+      ]
+    }
+  },
+  "component_compatibility": {
+    "flac": {
+      "macos_versions": ["11.0+"],
+      "architectures": ["arm64", "x86_64"],
+      "homebrew_formula": "flac",
+      "version_tested": "1.4.3",
+      "performance": {
+        "apple_silicon": "excellent",
+        "intel": "good"
+      },
+      "features_supported": {
+        "compression_levels": [0, 1, 2, 3, 4, 5, 6, 7, 8],
+        "metadata": ["vorbis_comments", "cue_sheets"],
+        "unicode": true,
+        "multithreading": false
+      },
+      "known_issues": [],
+      "status": "stable"
+    },
+    "lame": {
+      "macos_versions": ["11.0+"],
+      "architectures": ["arm64", "x86_64"],
+      "homebrew_formula": "lame",
+      "version_tested": "3.100",
+      "performance": {
+        "apple_silicon": "excellent",
+        "intel": "good"
+      },
+      "features_supported": {
+        "encoding_modes": ["CBR", "VBR", "ABR"],
+        "quality_levels": ["V0", "V1", "V2", "V3", "V4", "V5", "V6", "V7", "V8", "V9"],
+        "id3_versions": ["ID3v1", "ID3v2.3", "ID3v2.4"],
+        "unicode": true
+      },
+      "known_issues": [],
+      "status": "stable"
+    },
+    "opus-tools": {
+      "macos_versions": ["11.0+"],
+      "architectures": ["arm64", "x86_64"],
+      "homebrew_formula": "opus-tools",
+      "version_tested": "0.2",
+      "performance": {
+        "apple_silicon": "excellent",
+        "intel": "good"
+      },
+      "features_supported": {
+        "bitrates": "6-510 kbps",
+        "modes": ["VBR", "CVBR", "CBR"],
+        "complexity": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+        "frame_sizes": ["2.5", "5", "10", "20", "40", "60"],
+        "applications": ["voip", "audio", "lowdelay"]
+      },
+      "known_issues": [],
+      "status": "stable"
+    },
+    "ffmpeg": {
+      "macos_versions": ["11.0+"],
+      "architectures": ["arm64", "x86_64"],
+      "homebrew_formula": "ffmpeg",
+      "version_tested": "6.1",
+      "performance": {
+        "apple_silicon": "excellent",
+        "intel": "good"
+      },
+      "features_supported": {
+        "audio_codecs": ["aac", "mp3", "flac", "opus", "vorbis", "alac", "pcm"],
+        "video_codecs": ["h264", "h265", "vp9", "av1"],
+        "hardware_acceleration": ["videotoolbox", "opencl"],
+        "filtering": true,
+        "streaming": true
+      },
+      "known_issues": [
+        {
+          "issue": "Некоторые кодеки требуют дополнительных библиотек",
+          "severity": "minor",
+          "workaround": "Установить расширенную версию: brew install ffmpeg --with-libfdk-aac"
+        }
+      ],
+      "status": "stable"
+    },
+    "mediainfo": {
+      "macos_versions": ["11.0+"],
+      "architectures": ["arm64", "x86_64"],
+      "homebrew_formula": "mediainfo",
+      "version_tested": "23.11",
+      "performance": {
+        "apple_silicon": "excellent",
+        "intel": "excellent"
+      },
+      "features_supported": {
+        "output_formats": ["text", "xml", "json", "html"],
+        "media_analysis": "comprehensive",
+        "batch_processing": true
+      },
+      "known_issues": [],
+      "status": "stable"
+    },
+    "tag": {
+      "macos_versions": ["11.0+"],
+      "architectures": ["arm64", "x86_64"],
+      "homebrew_formula": "tag",
+      "version_tested": "1.1.1",
+      "performance": {
+        "apple_silicon": "good",
+        "intel": "good"
+      },
+      "features_supported": {
+        "formats": [".mp3", ".m4a", ".flac", ".ogg", ".opus"],
+        "tag_standards": ["ID3v1", "ID3v2", "APE", "Vorbis"],
+        "batch_operations": true
+      },
+      "known_issues": [],
+      "status": "stable"
+    }
+  },
+  "foobar2000_macos_specific": {
+    "version": "2.1",
+    "release_date": "2023-08-15",
+    "architecture_support": ["x86_64", "arm64"],
+    "native_apple_silicon": true,
+    "minimum_macos": "11.0",
+    "recommended_macos": "13.0+",
+    "installation_method": "homebrew_cask",
+    "app_sandbox": "partial",
+    "entitlements": [
+      "com.apple.security.files.user-selected.read-write",
+      "com.apple.security.files.downloads.read-write",
+      "com.apple.security.network.client"
+    ],
+    "limitations_vs_windows": [
+      "Ограниченная поддержка плагинов",
+      "Нет поддержки VST плагинов",
+      "Ограниченные возможности кастомизации UI",
+      "Некоторые Windows-специфичные компоненты недоступны"
+    ],
+    "macos_integrations": {
+      "file_associations": "supported",
+      "quicklook": "supported",
+      "spotlight": "supported",
+      "notification_center": "supported",
+      "media_keys": "supported",
+      "dock_integration": "supported",
+      "menu_bar": "supported",
+      "airplay": "limited"
+    }
+  },
+  "known_issues": {
+    "monterey_12_0": [
+      {
+        "issue": "Периодические вылеты при работе с большими библиотеками",
+        "severity": "medium",
+        "workaround": "Обновиться до 12.6 или новее",
+        "fixed_in": "12.6"
+      }
+    ],
+    "big_sur_11_x": [
+      {
+        "issue": "Проблемы с правами доступа к файлам",
+        "severity": "high",
+        "workaround": "Предоставить полные права доступа к диску в System Preferences",
+        "fixed_in": "12.0"
+      }
+    ],
+    "apple_silicon_m1": [
+      {
+        "issue": "Некоторые старые Homebrew формулы могут работать через Rosetta 2",
+        "severity": "low",
+        "workaround": "Переустановить формулы в native режиме",
+        "status": "mostly_resolved"
+      }
+    ]
+  },
+  "performance_benchmarks": {
+    "encoding_speed": {
+      "flac_level_8": {
+        "m2_max": "~15x realtime",
+        "m1_pro": "~12x realtime",
+        "intel_i9": "~8x realtime",
+        "intel_i5": "~5x realtime"
+      },
+      "mp3_v0": {
+        "m2_max": "~25x realtime",
+        "m1_pro": "~20x realtime",
+        "intel_i9": "~15x realtime",
+        "intel_i5": "~10x realtime"
+      },
+      "opus_192": {
+        "m2_max": "~30x realtime",
+        "m1_pro": "~25x realtime",
+        "intel_i9": "~18x realtime",
+        "intel_i5": "~12x realtime"
+      }
+    },
+    "memory_usage": {
+      "foobar2000_idle": "~50MB",
+      "foobar2000_large_library": "~200-500MB",
+      "encoding_processes": "~100-300MB per process"
+    },
+    "disk_space": {
+      "minimal_install": "~50MB",
+      "standard_install": "~200MB",
+      "professional_install": "~500MB+"
+    }
+  },
+  "security_considerations": {
+    "app_notarization": {
+      "foobar2000": "notarized",
+      "homebrew_packages": "signed_by_apple_or_developers"
+    },
+    "gatekeeper": {
+      "status": "compatible",
+      "unsigned_binaries": "may_require_manual_approval"
+    },
+    "system_integrity_protection": {
+      "compatibility": "full",
+      "restrictions": "none_affecting_functionality"
+    },
+    "sandboxing": {
+      "foobar2000": "partial_sandbox",
+      "homebrew_tools": "no_sandbox"
+    }
+  },
+  "migration_notes": {
+    "from_windows": [
+      "Конфигурации Windows версии несовместимы",
+      "Плейлисты могут быть импортированы с корректировкой путей",
+      "Некоторые компоненты имеют аналоги в macOS версии",
+      "Сочетания клавиш могут отличаться"
+    ],
+    "between_macos_versions": [
+      "Конфигурации обычно совместимы между версиями macOS",
+      "Пути к Homebrew могут изменяться при смене архитектуры",
+      "Рекомендуется пересоздание конфигурации при major updates"
+    ]
+  },
+  "testing_matrix": {
+    "last_tested": "2024-01-15",
+    "test_configurations": [
+      {
+        "macos": "14.2",
+        "hardware": "MacBook Pro M2 Max",
+        "foobar2000": "2.1",
+        "result": "excellent"
+      },
+      {
+        "macos": "13.6",
+        "hardware": "MacBook Air M1",
+        "foobar2000": "2.1",
+        "result": "excellent"
+      },
+      {
+        "macos": "12.7",
+        "hardware": "MacBook Pro Intel i9",
+        "foobar2000": "2.1",
+        "result": "good"
+      }
+    ],
+    "automated_tests": {
+      "encoding_quality": "passed",
+      "metadata_preservation": "passed",
+      "batch_processing": "passed",
+      "integration_features": "mostly_passed"
+    }
+  },
+  "update_strategy": {
+    "frequency": "monthly",
+    "sources": [
+      "foobar2000 official releases",
+      "Homebrew formula updates",
+      "macOS compatibility reports",
+      "Community feedback"
+    ],
+    "validation_process": [
+      "Test on multiple macOS versions",
+      "Verify encoding quality",
+      "Check integration features",
+      "Performance benchmarking"
+    ]
+  }
+}

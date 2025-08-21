@@ -1,0 +1,286 @@
+{
+  "metadata": {
+    "platform": "macOS",
+    "target_versions": ["11.0+", "12.0+", "13.0+", "14.0+"],
+    "architectures": ["x86_64", "arm64"],
+    "last_updated": "2024-01-15",
+    "format_version": "1.0",
+    "description": "Компоненты и кодировщики для foobar2000 на macOS через Homebrew"
+  },
+  "homebrew_components": {
+    "flac": {
+      "formula_name": "flac",
+      "description": "FLAC lossless аудио кодировщик",
+      "version_stable": "1.4.3",
+      "install_command": "brew install flac",
+      "binary_path_arm64": "/opt/homebrew/bin/flac",
+      "binary_path_intel": "/usr/local/bin/flac",
+      "features": ["lossless", "compression", "metadata"],
+      "required_for_profiles": ["minimal", "standard", "professional"],
+      "alternatives": [],
+      "dependencies": ["libogg"],
+      "file_extensions": [".flac"],
+      "quality_modes": ["lossless"],
+      "compression_levels": [0, 1, 2, 3, 4, 5, 6, 7, 8],
+      "supports_unicode": true,
+      "supports_cue": true
+    },
+    "lame": {
+      "formula_name": "lame",
+      "description": "LAME MP3 кодировщик высокого качества",
+      "version_stable": "3.100",
+      "install_command": "brew install lame",
+      "binary_path_arm64": "/opt/homebrew/bin/lame",
+      "binary_path_intel": "/usr/local/bin/lame",
+      "features": ["lossy", "variable_bitrate", "constant_bitrate"],
+      "required_for_profiles": ["minimal", "standard", "professional"],
+      "alternatives": [],
+      "dependencies": [],
+      "file_extensions": [".mp3"],
+      "quality_modes": ["CBR", "VBR", "ABR"],
+      "bitrates": [32, 40, 48, 56, 64, 80, 96, 112, 128, 160, 192, 224, 256, 320],
+      "vbr_modes": ["V0", "V1", "V2", "V3", "V4", "V5", "V6", "V7", "V8", "V9"],
+      "supports_unicode": true,
+      "supports_id3v2": true
+    },
+    "opus-tools": {
+      "formula_name": "opus-tools",
+      "description": "Opus аудио кодировщик нового поколения",
+      "version_stable": "0.2",
+      "install_command": "brew install opus-tools",
+      "binary_path_arm64": "/opt/homebrew/bin/opusenc",
+      "binary_path_intel": "/usr/local/bin/opusenc",
+      "features": ["lossy", "low_latency", "high_efficiency"],
+      "required_for_profiles": ["standard", "professional"],
+      "alternatives": [],
+      "dependencies": ["opus", "libogg"],
+      "file_extensions": [".opus"],
+      "quality_modes": ["VBR", "CVBR", "CBR"],
+      "bitrates": [6, 12, 16, 24, 32, 48, 64, 96, 128, 160, 192, 256, 320, 448, 510],
+      "supports_unicode": true,
+      "optimized_for": ["speech", "music", "low_latency"]
+    },
+    "ffmpeg": {
+      "formula_name": "ffmpeg",
+      "description": "Универсальный мультимедиа фреймворк",
+      "version_stable": "6.1",
+      "install_command": "brew install ffmpeg",
+      "binary_path_arm64": "/opt/homebrew/bin/ffmpeg",
+      "binary_path_intel": "/usr/local/bin/ffmpeg",
+      "features": ["conversion", "filtering", "streaming", "analysis"],
+      "required_for_profiles": ["professional"],
+      "alternatives": [],
+      "dependencies": ["numerous"],
+      "file_extensions": [".mp4", ".m4a", ".aac", ".wav", ".aiff", ".flac", ".mp3", ".opus", ".ogg"],
+      "codecs": {
+        "audio": ["aac", "mp3", "flac", "opus", "vorbis", "alac", "pcm"],
+        "video": ["h264", "h265", "vp9", "av1"]
+      },
+      "supports_metadata": true,
+      "supports_batch": true,
+      "hardware_acceleration": ["videotoolbox", "opencl"]
+    },
+    "mediainfo": {
+      "formula_name": "mediainfo",
+      "description": "Анализатор метаданных мультимедиа файлов",
+      "version_stable": "23.11",
+      "install_command": "brew install mediainfo",
+      "binary_path_arm64": "/opt/homebrew/bin/mediainfo",
+      "binary_path_intel": "/usr/local/bin/mediainfo",
+      "features": ["metadata_analysis", "format_detection", "technical_info"],
+      "required_for_profiles": ["standard", "professional"],
+      "alternatives": ["exiftool"],
+      "dependencies": [],
+      "supported_formats": ["most_audio_video_formats"],
+      "output_formats": ["text", "xml", "json", "html"],
+      "gui_available": true
+    },
+    "tag": {
+      "formula_name": "tag",
+      "description": "Инструмент командной строки для редактирования аудио тегов",
+      "version_stable": "1.1.1",
+      "install_command": "brew install tag",
+      "binary_path_arm64": "/opt/homebrew/bin/tag",
+      "binary_path_intel": "/usr/local/bin/tag",
+      "features": ["tag_editing", "batch_processing", "format_conversion"],
+      "required_for_profiles": ["professional"],
+      "alternatives": ["kid3-cli", "mid3v2"],
+      "dependencies": [],
+      "supported_formats": [".mp3", ".m4a", ".flac", ".ogg", ".opus"],
+      "tag_standards": ["ID3v1", "ID3v2", "APE", "Vorbis"],
+      "batch_operations": true
+    },
+    "jq": {
+      "formula_name": "jq",
+      "description": "JSON процессор командной строки",
+      "version_stable": "1.7",
+      "install_command": "brew install jq",
+      "binary_path_arm64": "/opt/homebrew/bin/jq",
+      "binary_path_intel": "/usr/local/bin/jq",
+      "features": ["json_parsing", "filtering", "transformation"],
+      "required_for_profiles": ["standard", "professional"],
+      "alternatives": [],
+      "dependencies": [],
+      "use_cases": ["config_processing", "metadata_extraction", "api_responses"],
+      "supports_streaming": true
+    },
+    "wget": {
+      "formula_name": "wget",
+      "description": "GNU Wget - загрузчик файлов",
+      "version_stable": "1.21.4",
+      "install_command": "brew install wget",
+      "binary_path_arm64": "/opt/homebrew/bin/wget",
+      "binary_path_intel": "/usr/local/bin/wget",
+      "features": ["http_download", "ftp_download", "recursive_download"],
+      "required_for_profiles": ["standard", "professional"],
+      "alternatives": ["curl"],
+      "dependencies": [],
+      "protocols": ["HTTP", "HTTPS", "FTP"],
+      "supports_resume": true,
+      "supports_authentication": true
+    }
+  },
+  "foobar2000_specific": {
+    "installation_method": "homebrew_cask",
+    "cask_name": "foobar2000",
+    "install_command": "brew install --cask foobar2000",
+    "version_macos": "2.1",
+    "app_bundle": "/Applications/foobar2000.app",
+    "config_directory": "~/Library/Application Support/foobar2000",
+    "supported_architectures": ["x86_64", "arm64"],
+    "minimum_macos": "11.0",
+    "native_formats": [".mp3", ".flac", ".m4a", ".aac", ".wav", ".aiff"],
+    "component_system": "limited",
+    "notes": [
+      "macOS версия имеет ограниченную поддержку плагинов по сравнению с Windows",
+      "Основные кодировщики устанавливаются отдельно через Homebrew",
+      "Некоторые Windows-специфичные компоненты недоступны"
+    ]
+  },
+  "architecture_detection": {
+    "command": "uname -m",
+    "apple_silicon": "arm64",
+    "intel": "x86_64",
+    "homebrew_prefix": {
+      "arm64": "/opt/homebrew",
+      "x86_64": "/usr/local"
+    },
+    "performance_notes": {
+      "apple_silicon": "Оптимизировано для Apple Silicon, лучшая энергоэффективность",
+      "intel": "Совместимость через Rosetta 2 если необходимо"
+    }
+  },
+  "profiles": {
+    "minimal": {
+      "description": "Базовые компоненты для FLAC и MP3",
+      "components": ["flac", "lame"],
+      "optional_components": ["jq"],
+      "disk_space": "~50MB",
+      "install_time": "2-5 минут"
+    },
+    "standard": {
+      "description": "Полная настройка с расширенными возможностями",
+      "components": ["flac", "lame", "opus-tools", "mediainfo", "jq", "wget"],
+      "optional_components": ["tag"],
+      "disk_space": "~200MB",
+      "install_time": "5-10 минут"
+    },
+    "professional": {
+      "description": "Профессиональная конфигурация с полной автоматизацией",
+      "components": ["flac", "lame", "opus-tools", "ffmpeg", "mediainfo", "tag", "jq", "wget"],
+      "optional_components": ["x264", "x265"],
+      "disk_space": "~500MB+",
+      "install_time": "10-20 минут"
+    }
+  },
+  "system_requirements": {
+    "minimum": {
+      "macos_version": "11.0",
+      "ram": "4GB",
+      "disk_space": "2GB",
+      "processor": "Apple Silicon или Intel x86_64"
+    },
+    "recommended": {
+      "macos_version": "13.0+",
+      "ram": "8GB+",
+      "disk_space": "10GB+",
+      "processor": "Apple Silicon M1+ или Intel Core i5+"
+    }
+  },
+  "troubleshooting": {
+    "common_issues": {
+      "homebrew_not_found": {
+        "description": "Homebrew не установлен или не найден в PATH",
+        "solution": "Установить Homebrew: /bin/bash -c \"$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)\""
+      },
+      "permission_denied": {
+        "description": "Отказ в доступе при установке",
+        "solution": "Проверить права доступа или использовать sudo для определенных операций"
+      },
+      "architecture_mismatch": {
+        "description": "Неправильная архитектура бинарных файлов",
+        "solution": "Переустановить компоненты с правильной архитектурой или использовать Rosetta 2"
+      },
+      "missing_dependencies": {
+        "description": "Отсутствуют зависимости для компонентов",
+        "solution": "Запустить brew deps <formula> и установить недостающие зависимости"
+      }
+    }
+  },
+  "performance_optimization": {
+    "apple_silicon": {
+      "native_compilation": true,
+      "energy_efficient": true,
+      "recommendations": [
+        "Используйте нативные ARM64 версии всех инструментов",
+        "Избегайте Rosetta 2 где возможно",
+        "Оптимизируйте для пониженного энергопотребления"
+      ]
+    },
+    "intel": {
+      "compatibility_layer": "Rosetta 2 при необходимости",
+      "recommendations": [
+        "Используйте x86_64 версии для максимальной совместимости",
+        "При проблемах с производительностью рассмотрите native ARM64 альтернативы"
+      ]
+    }
+  },
+  "quality_presets": {
+    "audiophile": {
+      "flac": "-8 -V",
+      "mp3": "-V 0",
+      "opus": "--bitrate 256",
+      "description": "Максимальное качество для аудиофилов"
+    },
+    "standard": {
+      "flac": "-5 -V",
+      "mp3": "-V 2",
+      "opus": "--bitrate 128",
+      "description": "Баланс качества и размера файла"
+    },
+    "portable": {
+      "flac": "-3",
+      "mp3": "-V 4",
+      "opus": "--bitrate 96",
+      "description": "Компактные файлы для мобильных устройств"
+    }
+  },
+  "integration_features": {
+    "macos_specific": {
+      "file_associations": "Автоматическая регистрация файловых ассоциаций",
+      "quicklook": "Поддержка предпросмотра аудиофайлов",
+      "spotlight": "Индексирование метаданных для поиска",
+      "notification_center": "Системные уведомления",
+      "media_keys": "Поддержка медиа-клавиш клавиатуры",
+      "dock_integration": "Интеграция с Dock",
+      "airplay": "Поддержка AirPlay (ограниченная)"
+    }
+  },
+  "maintenance": {
+    "update_frequency": "Еженедельно",
+    "update_command": "brew update && brew upgrade",
+    "cleanup_command": "brew cleanup",
+    "health_check": "brew doctor",
+    "outdated_check": "brew outdated"
+  }
+}
