@@ -69,7 +69,7 @@ trap cleanup_on_exit EXIT INT TERM
 if [[ $# -lt 2 ]]; then
     echo "Использование: $0 <input_file> <output_format> [mode] [suffix] [--batch]"
     echo
-    echo "Форматы: flac, mp3_v0, mp3_320, mp3_commercial, opus"
+    echo "Форматы: flac, flac_commercial, mp3_v0, mp3_320, mp3_commercial, opus"
     echo
     echo "Режимы:"
     echo "  suffix - добавить суффикс к имени файла (по умолчанию)"
@@ -125,7 +125,7 @@ log_info "Расширение: $INPUT_EXT"
 # Определение расширения выходного файла
 get_output_extension() {
     case "$1" in
-        flac) echo "flac" ;;
+        flac*) echo "flac" ;;
         mp3_*) echo "mp3" ;;
         opus) echo "opus" ;;
         *) echo "unknown" ;;
@@ -172,6 +172,7 @@ determine_output_file() {
                 # Автоматический суффикс на основе формата
                 case "$format" in
                     flac) suffix="_flac" ;;
+                    flac_commercial) suffix="_flac_commercial" ;;
                     mp3_v0) suffix="_v0" ;;
                     mp3_320) suffix="_320" ;;
                     mp3_commercial) suffix="_commercial" ;;
@@ -220,8 +221,8 @@ perform_conversion() {
     
     case "$format" in
         flac)
-            log_info "Команда: flac -8 -V -o \"$output\" \"$input\""
-            if "$HOMEBREW_PREFIX/bin/flac" -8 -V -o "$output" "$input" 2>&1 | tee -a "$LOG_FILE"; then
+            log_info "Команда: flac -8 -V --preserve-modtime --keep-foreign-metadata -o \"$output\" \"$input\""
+            if "$HOMEBREW_PREFIX/bin/flac" -8 -V --preserve-modtime --keep-foreign-metadata -o "$output" "$input" 2>&1 | tee -a "$LOG_FILE"; then
                 log_success "FLAC конвертация завершена"
                 return 0
             else
@@ -229,9 +230,19 @@ perform_conversion() {
                 return 1
             fi
             ;;
+        flac_commercial)
+            log_info "Команда: flac -4 -V --force --sample-rate=44100 --bps=24 --preserve-modtime --keep-foreign-metadata -o \"$output\" \"$input\""
+            if "$HOMEBREW_PREFIX/bin/flac" -4 -V --force --sample-rate=44100 --bps=24 --preserve-modtime --keep-foreign-metadata -o "$output" "$input" 2>&1 | tee -a "$LOG_FILE"; then
+                log_success "FLAC Commercial конвертация завершена"
+                return 0
+            else
+                log_error "Ошибка FLAC Commercial конвертации"
+                return 1
+            fi
+            ;;
         mp3_v0)
-            log_info "Команда: lame -V 0 -h -m j --vbr-new \"$input\" \"$output\""
-            if "$HOMEBREW_PREFIX/bin/lame" -V 0 -h -m j --vbr-new "$input" "$output" 2>&1 | tee -a "$LOG_FILE"; then
+            log_info "Команда: lame -V 0 -h -m j --vbr-new --add-id3v2 --id3v2-only --preserve-modtime \"$input\" \"$output\""
+            if "$HOMEBREW_PREFIX/bin/lame" -V 0 -h -m j --vbr-new --add-id3v2 --id3v2-only --preserve-modtime "$input" "$output" 2>&1 | tee -a "$LOG_FILE"; then
                 log_success "MP3 V0 конвертация завершена"
                 return 0
             else
@@ -240,8 +251,8 @@ perform_conversion() {
             fi
             ;;
         mp3_320)
-            log_info "Команда: lame -b 320 -h -m j --cbr \"$input\" \"$output\""
-            if "$HOMEBREW_PREFIX/bin/lame" -b 320 -h -m j --cbr "$input" "$output" 2>&1 | tee -a "$LOG_FILE"; then
+            log_info "Команда: lame -b 320 -h -m j --cbr --add-id3v2 --id3v2-only --preserve-modtime \"$input\" \"$output\""
+            if "$HOMEBREW_PREFIX/bin/lame" -b 320 -h -m j --cbr --add-id3v2 --id3v2-only --preserve-modtime "$input" "$output" 2>&1 | tee -a "$LOG_FILE"; then
                 log_success "MP3 320 конвертация завершена"
                 return 0
             else
@@ -250,8 +261,8 @@ perform_conversion() {
             fi
             ;;
         mp3_commercial)
-            log_info "Команда: lame -b 192 -h -m j --cbr --resample 44.1 --add-id3v2 --id3v2-only \"$input\" \"$output\""
-            if "$HOMEBREW_PREFIX/bin/lame" -b 192 -h -m j --cbr --resample 44.1 --add-id3v2 --id3v2-only "$input" "$output" 2>&1 | tee -a "$LOG_FILE"; then
+            log_info "Команда: lame -b 192 -h -m j --cbr --resample 44.1 --bitwidth 24 --add-id3v2 --id3v2-only --preserve-modtime \"$input\" \"$output\""
+            if "$HOMEBREW_PREFIX/bin/lame" -b 192 -h -m j --cbr --resample 44.1 --bitwidth 24 --add-id3v2 --id3v2-only --preserve-modtime "$input" "$output" 2>&1 | tee -a "$LOG_FILE"; then
                 log_success "MP3 Commercial конвертация завершена"
                 return 0
             else
@@ -260,8 +271,8 @@ perform_conversion() {
             fi
             ;;
         opus)
-            log_info "Команда: opusenc --bitrate 192 \"$input\" \"$output\""
-            if "$HOMEBREW_PREFIX/bin/opusenc" --bitrate 192 "$input" "$output" 2>&1 | tee -a "$LOG_FILE"; then
+            log_info "Команда: opusenc --bitrate 192 --preserve-modtime \"$input\" \"$output\""
+            if "$HOMEBREW_PREFIX/bin/opusenc" --bitrate 192 --preserve-modtime "$input" "$output" 2>&1 | tee -a "$LOG_FILE"; then
                 log_success "Opus конвертация завершена"
                 return 0
             else

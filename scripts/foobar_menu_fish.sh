@@ -54,19 +54,21 @@ convert_file() {
     echo
     echo "Выберите формат вывода:"
     echo "1) FLAC (lossless)"
-    echo "2) MP3 V0 VBR (~245 kbps)"  
-    echo "3) MP3 320 CBR"
-    echo "4) MP3 192 CBR Commercial"
-    echo "5) Opus (~192 kbps)"
+    echo "2) FLAC Commercial (44.1kHz, 24-bit)"
+    echo "3) MP3 V0 VBR (~245 kbps)"  
+    echo "4) MP3 320 CBR"
+    echo "5) MP3 192 CBR Commercial"
+    echo "6) Opus (~192 kbps)"
     echo
-    read -r -p "Формат (1-5): " format_choice
+    read -r -p "Формат (1-6): " format_choice
     
     case "$format_choice" in
         1) format="flac" ;;
-        2) format="mp3_v0" ;;
-        3) format="mp3_320" ;;
-        4) format="mp3_commercial" ;;
-        5) format="opus" ;;
+        2) format="flac_commercial" ;;
+        3) format="mp3_v0" ;;
+        4) format="mp3_320" ;;
+        5) format="mp3_commercial" ;;
+        6) format="opus" ;;
         *) echo -e "${RED}Неверный выбор${NC}"; return 1 ;;
     esac
     
@@ -200,19 +202,21 @@ batch_convert() {
     echo
     echo "Выберите формат вывода:"
     echo "1) FLAC (lossless)"
-    echo "2) MP3 V0 VBR"
-    echo "3) MP3 320 CBR"
-    echo "4) MP3 192 CBR Commercial"
-    echo "5) Opus"
+    echo "2) FLAC Commercial (44.1kHz, 24-bit)"
+    echo "3) MP3 V0 VBR"
+    echo "4) MP3 320 CBR"
+    echo "5) MP3 192 CBR Commercial"
+    echo "6) Opus"
     echo
-    read -r -p "Формат (1-5): " format_choice
+    read -r -p "Формат (1-6): " format_choice
     
     case "$format_choice" in
         1) format="flac" ;;
-        2) format="mp3_v0" ;;
-        3) format="mp3_320" ;;
-        4) format="mp3_commercial" ;;
-        5) format="opus" ;;
+        2) format="flac_commercial" ;;
+        3) format="mp3_v0" ;;
+        4) format="mp3_320" ;;
+        5) format="mp3_commercial" ;;
+        6) format="opus" ;;
         *) echo -e "${RED}Неверный выбор${NC}"; return 1 ;;
     esac
     
@@ -363,9 +367,10 @@ show_help() {
     
     echo -e "${CYAN}Форматы конвертации:${NC}"
     echo "  flac    - FLAC lossless (-8 -V)"
+    echo "  flac_commercial - FLAC Commercial (44.1kHz, 24-bit, -4)"
     echo "  mp3_v0  - MP3 V0 VBR (~245 kbps)"
     echo "  mp3_320 - MP3 320 CBR"
-    echo "  mp3_commercial - MP3 192 CBR Commercial"
+    echo "  mp3_commercial - MP3 192 CBR Commercial (24-bit)"
     echo "  opus    - Opus 192 kbps"
     echo
     

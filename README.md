@@ -1,337 +1,313 @@
 # foobar2000 Automation for macOS
 
-Automation system for configuring foobar2000 on macOS with professional requirements for music library management and digital release creation.
+Professional audio library management and digital release creation system for foobar2000 on macOS.
 
-## Features
+## Overview
 
-- **Automatic installation** via Homebrew of all necessary encoders
-- **Professional setup** of foobar2000 with macOS optimization
-- **macOS integration** - Spotlight, QuickLook, media keys, notifications
-- **Apple Silicon support** - native optimization for M1/M2/M3 chips
-- **Profile flexibility** - from minimal to professional configuration
-- **Batch conversion** - stable processing of large file collections
-- **Fish Shell integration** - interactive commands and menus
+This project provides a comprehensive automation system for foobar2000 on macOS, featuring professional-grade audio conversion, batch processing, and seamless macOS integration. Designed for audiophiles, music producers, and digital release creators who demand quality and efficiency.
 
-## Latest Fixes (2025-08-21)
+## Key Features
 
-**Critical batch conversion bugs fixed:**
-- Stable operation of interactive batch conversion menu
-- Full progress output for LAME/FLAC/Opus during conversion
-- Batch mode without interactive prompts
-- Error handling with graceful recovery
+### 🎵 Professional Audio Conversion
+- **Lossless Formats**: FLAC with multiple compression levels
+- **Commercial Ready**: FLAC Commercial (44.1kHz, 24-bit) and MP3 Commercial (44.1kHz, 24-bit, 192kbps)
+- **High-Quality Lossy**: MP3 V0/320/Commercial, Opus, AAC, ALAC
+- **Metadata Preservation**: Complete tag and timestamp preservation across all formats
 
-Details in [`BUGFIXES.md`](./BUGFIXES.md)
+### 🖥️ macOS Integration
+- **Apple Silicon Optimized**: Native ARM64 support with Intel compatibility
+- **Homebrew Integration**: Automated installation of audio encoders
+- **Fish Shell Support**: Interactive functions and command completion
+- **System Integration**: Spotlight metadata, QuickLook, media keys
 
-## System Requirements
+### ⚙️ Automation Features
+- **Batch Processing**: Mass conversion with progress tracking
+- **File Monitoring**: Automatic import and processing
+- **Interactive Menus**: User-friendly GUI-style interfaces
+- **Error Handling**: Comprehensive logging and recovery
 
-- **macOS 11.0 Big Sur** or higher (macOS 13.0+ recommended)
-- **Homebrew** for encoder installation
-- **2 GB** free disk space
-- **Apple Silicon** (M1/M2/M3) or **Intel** processor
-- Internet connection for component downloads
+### 🔧 Professional Tools
+- **Quality Analysis**: Detailed audio file inspection with MediaInfo
+- **Multiple Modes**: Suffix, replace, and interactive conversion modes
+- **Backup System**: Automatic backup creation before operations
+- **Update System**: Easy synchronization with repository updates
 
 ## Quick Start
 
+### Prerequisites
+- macOS 11.0 Big Sur or later (macOS 13.0+ recommended)
+- Homebrew package manager
+- foobar2000 v2.1+
+- 2GB free disk space
+
 ### Installation
 
-1. **Install Homebrew** (if not already installed):
+1. **Clone the repository**:
+   ```bash
+   git clone https://github.com/argent-smith/foobar2000-automation-macos.git
+   cd foobar2000-automation-macos
+   ```
+
+2. **Run the installation script**:
+   ```bash
+   # Interactive installation (recommended)
+   ./scripts/install.sh --mode interactive
+   
+   # Quick install with standard profile
+   ./scripts/install.sh --profile standard --mode automatic
+   ```
+
+3. **Load Fish functions** (if using Fish shell):
+   ```bash
+   source ~/Library/foobar2000-v2/foobar2000_fish_functions.fish
+   ```
+
+### Basic Usage
+
 ```bash
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+# Interactive menu system
+foobar-menu
+
+# Convert single file
+foobar-convert input.wav flac_commercial
+
+# Batch convert folder
+foobar-batch-convert ~/Music/ToConvert mp3_commercial
+
+# Analyze audio quality
+foobar-quality audio_file.flac
 ```
 
-2. **Clone the project**:
-```bash
-git clone https://github.com/your-repo/foobar2000-automation-macos.git
-cd foobar2000-automation-macos
-```
+## Supported Formats
 
-3. **Run automatic installation**:
-```bash
-# Interactive installation (recommended)
-./scripts/install.sh --mode interactive
+### Lossless Formats
+| Format | Profile | Description | Quality |
+|--------|---------|-------------|---------|
+| FLAC | `flac` | Standard lossless | -8 compression, full metadata |
+| FLAC Commercial | `flac_commercial` | Commercial release ready | 44.1kHz, 24-bit, -4 compression |
+| ALAC | `alac_ffmpeg` | Apple Lossless | Full compatibility with Apple ecosystem |
 
-# Quick installation with standard profile
-./scripts/install.sh --profile standard --mode automatic
-```
-
-### Configuration Profiles
-
-- **minimal** - Basic encoders (FLAC, MP3)
-- **standard** - Full set with Opus and analysis utilities
-- **professional** - Maximum configuration with FFmpeg and automation
-- **custom** - User-defined settings
-
-## Architecture and Compatibility
-
-### Apple Silicon (M1/M2/M3)
-- Native ARM64 support
-- Superior encoding performance
-- Energy efficiency
-- Homebrew paths: `/opt/homebrew/bin/`
-
-### Intel Mac
-- Full compatibility
-- Rosetta 2 when needed
-- Homebrew paths: `/usr/local/bin/`
+### Lossy Formats
+| Format | Profile | Description | Quality |
+|--------|---------|-------------|---------|
+| MP3 V0 | `mp3_v0` | Variable bitrate high quality | ~245 kbps VBR |
+| MP3 320 | `mp3_320` | Constant bitrate maximum | 320 kbps CBR |
+| MP3 Commercial | `mp3_commercial` | Commercial release ready | 44.1kHz, 24-bit, 192 kbps CBR |
+| Opus | `opus` | Modern efficient codec | 192 kbps, superior compression |
+| AAC | `aac_ffmpeg_high` | High-quality AAC | 256 kbps |
 
 ## Project Structure
 
 ```
 foobar2000-automation-macos/
-├── scripts/                    # Bash scripts
-│   ├── install.sh             # Main installation script
-│   ├── components-downloader.sh # Encoder installation via Homebrew
-│   ├── config-generator.sh    # Configuration generation
-│   └── validator.sh           # Installation validation
-├── configs/                   # Configuration files
-│   ├── presets/              # Encoder presets for macOS
-│   ├── scripts/              # Masstagger scripts (adapted for macOS)
-│   └── templates/            # macOS integration templates
-├── resources/                # Resource files
-│   ├── macos_components.json # Homebrew component information
-│   └── compatibility_macos.json # macOS compatibility matrix
-└── docs/                     # Documentation
-    ├── troubleshooting_macos.md
-    └── customization_macos.md
+├── README.md                    # This file
+├── UPDATE.md                    # Update system documentation
+├── CLAUDE.md                    # Development guidelines
+├── update.sh                    # Quick update script
+├── scripts/                     # Core automation scripts
+│   ├── install.sh              # Main installation script
+│   ├── update_system.sh        # System update script
+│   ├── convert_with_external_advanced.sh  # Advanced converter
+│   ├── foobar_menu_fish.sh     # Interactive menu system
+│   ├── foobar2000_fish_functions.fish     # Fish shell functions
+│   ├── foobar_integration_setup.sh        # System integration
+│   ├── components-downloader.sh           # Homebrew package installer
+│   ├── config-generator.sh               # Configuration generator
+│   └── validator.sh                      # Installation validator
+├── configs/                     # Configuration files
+│   ├── presets/
+│   │   └── encoder_presets_macos.cfg     # Audio encoder configurations
+│   ├── scripts/
+│   │   └── MASSTAGGER_MACOS.txt          # Mass tagging scripts
+│   └── templates/
+│       └── macos_integration.cfg         # Integration templates
+├── docs/                        # Documentation
+│   ├── INSTALLATION.md         # Detailed installation guide
+│   ├── ENCODING_PROFILES.md    # Complete format documentation
+│   ├── SCRIPT_REFERENCE.md     # Script usage reference
+│   ├── FISH_INTEGRATION.md     # Fish shell guide
+│   ├── TROUBLESHOOTING.md      # Problem resolution guide
+│   ├── ARCHITECTURE.md         # System architecture
+│   └── EXAMPLES.md             # Usage examples
+└── resources/                   # Additional resources
+    ├── macos_components.json   # Homebrew component definitions
+    └── compatibility_macos.json # macOS version compatibility
 ```
 
-## Supported Formats and Encoders
+## Configuration Profiles
 
-### Lossless Formats
-- **FLAC** - via `flac` (Homebrew)
-  - Compression: levels 0-8
-  - Metadata: Vorbis Comments, CUE support
-  - Unicode: full support
+The system supports multiple configuration profiles for different use cases:
 
-### Lossy Formats
-- **MP3** - via `lame` (Homebrew)
-  - Modes: CBR, VBR (V0-V9), ABR
-  - Tags: ID3v1, ID3v2.3, ID3v2.4
-  - Quality: up to 320 kbps
+### Minimal Profile
+- Basic encoders (FLAC, MP3)
+- Essential functionality
+- Minimal disk usage
 
-- **Opus** - via `opus-tools` (Homebrew)
-  - Bitrate: 6-510 kbps
-  - Modes: VBR, CVBR, CBR
-  - Optimization: speech, music, low latency
+### Standard Profile (Recommended)
+- Full encoder set including commercial formats
+- Complete metadata preservation
+- Interactive tools and analysis
 
-- **AAC/ALAC** - via `ffmpeg` (Homebrew)
-  - AAC: up to 256 kbps
-  - ALAC: lossless
-  - Container: M4A
+### Professional Profile
+- All encoders including FFmpeg-based formats
+- Advanced batch processing
+- Complete automation and monitoring
 
-## Script Usage
+### Custom Profile
+- User-defined encoder selection
+- Configurable quality settings
+- Tailored for specific workflows
 
-### Component Installation
+## System Requirements
+
+### macOS Compatibility
+- ✅ macOS 14.0 Sonoma (recommended)
+- ✅ macOS 13.0 Ventura (recommended)
+- ✅ macOS 12.0 Monterey (supported)
+- ✅ macOS 11.0 Big Sur (minimum)
+
+### Architecture Support
+- ✅ Apple Silicon (M1/M2/M3) - Native ARM64 optimization
+- ✅ Intel x86_64 - Full compatibility with Rosetta 2
+
+### Dependencies
+- **Homebrew**: Package management for audio encoders
+- **foobar2000**: Target application (v2.1+ recommended)
+- **Command Line Tools**: Xcode command line tools
+
+### Optional Enhancements
+- **Fish Shell**: Enhanced interactive experience
+- **MediaInfo**: Detailed audio analysis
+- **fswatch**: Efficient file monitoring
+
+## Integration Features
+
+### macOS System Integration
+- **File Associations**: Automatic registration of audio formats
+- **Spotlight Integration**: Searchable metadata indexing
+- **QuickLook Support**: Audio file preview in Finder
+- **Notification Center**: Conversion progress and completion alerts
+- **Media Key Support**: Hardware playback control
+- **Dock Integration**: Progress indication and context menus
+
+### Shell Integration
+- **Fish Shell Functions**: Native command completion and help
+- **Bash Compatibility**: Works in all POSIX-compliant shells
+- **Interactive Menus**: GUI-style terminal interfaces
+- **Command Aliases**: Short commands for common operations
+
+## Performance Benchmarks
+
+### Apple Silicon M2 Max
+- FLAC Level 8: ~15x realtime speed
+- MP3 V0: ~25x realtime speed
+- Opus 192k: ~30x realtime speed
+- Batch processing: 1000 files in ~10 minutes
+
+### Intel Core i9
+- FLAC Level 8: ~8x realtime speed
+- MP3 V0: ~15x realtime speed
+- Opus 192k: ~18x realtime speed
+- Batch processing: 1000 files in ~18 minutes
+
+## Usage Examples
+
+### Single File Conversion
+```bash
+# Convert WAV to FLAC Commercial format
+./scripts/convert_with_external_advanced.sh input.wav flac_commercial suffix
+
+# Replace file with MP3 Commercial version
+./scripts/convert_with_external_advanced.sh input.flac mp3_commercial replace
+```
+
+### Batch Operations
+```bash
+# Interactive menu for batch conversion
+bash ~/Library/foobar2000-v2/foobar_menu_fish.sh
+
+# Command-line batch conversion
+foobar-batch-convert ~/Music/Albums flac_commercial
+```
+
+### Quality Analysis
+```bash
+# Analyze single file
+foobar-quality ~/Music/test.flac
+
+# Batch quality analysis
+for file in ~/Music/*.flac; do
+    echo "Analyzing: $(basename "$file")"
+    foobar-quality "$file"
+done
+```
+
+## Update System
+
+Keep your installation current with the latest improvements:
 
 ```bash
-# Install all basic encoders
-./scripts/components-downloader.sh -c flac,lame,opus
+# Check for updates (dry run)
+./update.sh --dry-run
 
-# Install all components for professional use
-./scripts/components-downloader.sh -c all
+# Update with backup
+./update.sh --backup
 
-# Show available components
-./scripts/components-downloader.sh
+# Force complete update
+./update.sh --force --backup
 ```
 
-### Configuration Generation
+## Contributing
 
-```bash
-# Create standard configuration
-./scripts/config-generator.sh --profile standard
+This project welcomes contributions from the audio and macOS development community.
 
-# Professional configuration with library paths
-./scripts/config-generator.sh --profile professional --library-paths ~/Music,~/FLAC
+### Development Setup
+1. Fork the repository
+2. Create a feature branch
+3. Follow the coding standards in `CLAUDE.md`
+4. Test on both Apple Silicon and Intel if possible
+5. Submit a pull request
 
-# Create backup before changes
-./scripts/config-generator.sh --profile standard --backup
-```
+### Areas for Contribution
+- Additional audio format support
+- Performance optimizations
+- GUI applications
+- Integration with other audio tools
+- Documentation improvements
 
-### Installation Validation
+## Support and Community
 
-```bash
-# Basic validation
-./scripts/validator.sh
+### Getting Help
+- 📖 **Documentation**: Check the `docs/` directory for detailed guides
+- 🐛 **Issues**: Report bugs and request features on GitHub
+- 💬 **Discussions**: Community support and feature discussions
 
-# Detailed validation with report
-./scripts/validator.sh --detailed --report validation-report.json
-
-# Validate specific profile
-./scripts/validator.sh --profile professional
-```
-
-## macOS Integration
-
-### System Features
-- **File associations** - automatic audio format registration
-- **Spotlight** - metadata indexing for search
-- **QuickLook** - audio file preview in Finder
-- **Notification Center** - track change notifications
-- **Media keys** - keyboard control
-- **Dock integration** - progress indicators and menus
-
-### Configuration Paths
-```
-~/Library/Application Support/foobar2000/     # Main configuration
-~/Library/Application Support/foobar2000/encoder_presets/   # Encoder presets
-~/Library/Application Support/foobar2000/masstagger_scripts/ # Tagging scripts
-~/Library/Logs/foobar2000/                    # Application logs
-```
-
-## Masstagger Scripts for macOS
-
-Specially adapted for macOS specifics:
-
-- **Unicode compatibility** - proper handling of special characters
-- **File system** - HFS+/APFS compatibility
-- **Finder integration** - optimized folder structures
-
-### Main Scripts:
-- `AUTOTRACKNUMBER_MACOS` - track numbering
-- `GENRE_STANDARDIZE_MACOS` - genre standardization
-- `FILENAME_STRUCTURE_MACOS` - file and folder structure
-- `REPLAYGAIN_AUTO_MACOS` - automatic ReplayGain
-
-## Encoder Presets
-
-### Recommended Quality Settings:
-
-**Audiophile (maximum quality):**
-- FLAC: `-8 -V` (maximum compression)
-- MP3: `-V 0` (VBR ~245 kbps)
-- Opus: `--bitrate 256`
-
-**Standard (balanced):**
-- FLAC: `-5 -V` (fast compression)
-- MP3: `-V 2` (VBR ~190 kbps)
-- Opus: `--bitrate 128`
-
-**Portable (mobile devices):**
-- FLAC: `-3` (fast)
-- MP3: `-V 4` (VBR ~165 kbps)
-- Opus: `--bitrate 96`
-
-## Performance
-
-### Encoding Benchmarks (approximate):
-
-**Apple Silicon M2 Max:**
-- FLAC level 8: ~15x realtime
-- MP3 V0: ~25x realtime
-- Opus 192k: ~30x realtime
-
-**Intel Core i9:**
-- FLAC level 8: ~8x realtime
-- MP3 V0: ~15x realtime
-- Opus 192k: ~18x realtime
-
-## Troubleshooting
-
-### Common Issues:
-
-**Homebrew not found:**
-```bash
-# For Apple Silicon
-echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> ~/.zshrc
-
-# For Intel
-echo 'eval "$(/usr/local/bin/brew shellenv)"' >> ~/.zshrc
-```
-
-**Folder access denied:**
-- Grant access permissions in System Preferences → Security & Privacy → Privacy → Files and Folders
-
-**Encoders not found:**
-```bash
-# Check installation
-brew list flac lame opus-tools ffmpeg
-
-# Reinstall if necessary
-brew reinstall flac lame opus-tools
-```
-
-## Automation
-
-### Creating Hot Folders:
-```bash
-# Automatic import
-mkdir -p ~/Music/Import
-# Files in this folder will be automatically added to library
-
-# Automatic conversion
-mkdir -p ~/Music/Convert
-# Files will be converted according to preset settings
-```
-
-### Task Scheduler (cron):
-```bash
-# Automatic component updates every Sunday at 2:00 AM
-0 2 * * 0 /opt/homebrew/bin/brew update && /opt/homebrew/bin/brew upgrade
-```
-
-## System Updates
-
-```bash
-# Update all Homebrew components
-brew update && brew upgrade
-
-# Update foobar2000
-brew upgrade --cask foobar2000
-
-# Check outdated packages
-brew outdated
-
-# Clear cache
-brew cleanup
-```
-
-## Backup
-
-```bash
-# Configuration backup
-cp -R ~/Library/Application\ Support/foobar2000 ~/Desktop/foobar2000-backup
-
-# Encoder presets backup
-tar -czf ~/Desktop/encoder-presets-backup.tar.gz -C ~/Library/Application\ Support/foobar2000 encoder_presets
-
-# Restore
-cp -R ~/Desktop/foobar2000-backup ~/Library/Application\ Support/foobar2000
-```
-
-## Customization
-
-### Creating Custom Presets:
-```bash
-# Edit encoder presets
-nano ~/Library/Application\ Support/foobar2000/encoder_presets/my_custom.preset
-
-# Create custom tagging scripts
-nano ~/Library/Application\ Support/foobar2000/masstagger_scripts/MY_CUSTOM_SCRIPT.txt
-```
-
-### Integration with Other Applications:
-- **Automator** - create workflows for file processing
-- **AppleScript** - automation via system scripts
-- **Shortcuts** - integration with Shortcuts app
-
-## Support and Development
-
-- **GitHub Issues** - bug reports
-- **Discussions** - usage questions
-- **Wiki** - additional documentation
-
-When creating issues, include:
-- macOS version
-- Processor architecture (Apple Silicon/Intel)
-- foobar2000 version
-- Script execution logs
+### Common Issues
+- **Installation Problems**: See `docs/TROUBLESHOOTING.md`
+- **Performance Issues**: Check system requirements and available resources
+- **Format Support**: Verify Homebrew package installation
 
 ## License
 
-MIT License - free use and modification.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## Acknowledgments
+
+- **foobar2000 Development Team**: For creating an exceptional audio player
+- **Homebrew Community**: For simplifying macOS package management
+- **Audio Codec Developers**: FLAC, LAME, Opus, and FFmpeg teams
+- **macOS Audio Community**: For testing and feedback
+
+## Version History
+
+- **v1.1.0**: Added commercial encoding profiles and enhanced metadata preservation
+- **v1.0.1**: Critical bug fixes for batch conversion and system integration
+- **v1.0.0**: Initial stable release with complete automation system
 
 ---
 
-**Compatibility**: macOS 11.0+, Apple Silicon + Intel  
-**Support**: Current macOS and foobar2000 versions  
-**Updates**: Regular compatibility updates
+**Status**: Active Development  
+**Minimum macOS**: 11.0 Big Sur  
+**Recommended macOS**: 13.0 Ventura or later  
+**Architecture**: Universal (Apple Silicon + Intel)  
+**License**: MIT

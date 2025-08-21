@@ -8,11 +8,11 @@ end
 function foobar-convert
     if test (count $argv) -lt 2
         echo "Usage: foobar-convert <file> <format>"
-        echo "Formats: flac, mp3_v0, mp3_320, opus"
+        echo "Formats: flac, flac_commercial, mp3_v0, mp3_320, mp3_commercial, opus"
         return 1
     end
     
-    bash ~/Library/foobar2000-v2/convert_with_external.sh $argv[1] $argv[2]
+    bash ~/Library/foobar2000-v2/convert_with_external_advanced.sh $argv[1] $argv[2] suffix
 end
 
 function foobar-monitor
@@ -47,7 +47,7 @@ end
 function foobar-batch-convert
     if test (count $argv) -lt 2
         echo "Usage: foobar-batch-convert <folder> <format>"
-        echo "Formats: flac, mp3_v0, mp3_320, opus"
+        echo "Formats: flac, flac_commercial, mp3_v0, mp3_320, mp3_commercial, opus"
         return 1
     end
     
@@ -66,7 +66,7 @@ function foobar-batch-convert
     for ext in wav flac mp3 m4a
         for file in (find "$folder" -name "*.$ext" -type f)
             echo "Converting: "(basename "$file")
-            bash ~/Library/foobar2000-v2/convert_with_external.sh "$file" "$format"
+            bash ~/Library/foobar2000-v2/convert_with_external_advanced.sh "$file" "$format" suffix
             echo
         end
     end
