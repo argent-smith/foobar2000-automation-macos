@@ -23,6 +23,10 @@ Thumbs.db
 *.swp
 *.swo
 
+# AI assistant configuration
+.claude/
+CLAUDE.md
+
 # Compiled files
 *.o
 *.so
