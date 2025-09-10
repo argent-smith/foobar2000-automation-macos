@@ -55,20 +55,24 @@ convert_file() {
     echo "Выберите формат вывода:"
     echo "1) FLAC (lossless)"
     echo "2) FLAC Commercial (44.1kHz, 24-bit)"
-    echo "3) MP3 V0 VBR (~245 kbps)"  
-    echo "4) MP3 320 CBR"
-    echo "5) MP3 192 CBR Commercial"
-    echo "6) Opus (~192 kbps)"
+    echo "3) FLAC Commercial 16-bit (44.1kHz, 16-bit)"
+    echo "4) MP3 V0 VBR (~245 kbps)"  
+    echo "5) MP3 320 CBR"
+    echo "6) MP3 192 CBR Commercial (24-bit)"
+    echo "7) MP3 192 CBR Commercial 16-bit"
+    echo "8) Opus (~192 kbps)"
     echo
-    read -r -p "Формат (1-6): " format_choice
+    read -r -p "Формат (1-8): " format_choice
     
     case "$format_choice" in
         1) format="flac" ;;
         2) format="flac_commercial" ;;
-        3) format="mp3_v0" ;;
-        4) format="mp3_320" ;;
-        5) format="mp3_commercial" ;;
-        6) format="opus" ;;
+        3) format="flac_commercial_16-bit" ;;
+        4) format="mp3_v0" ;;
+        5) format="mp3_320" ;;
+        6) format="mp3_commercial" ;;
+        7) format="mp3_commercial_16-bit" ;;
+        8) format="opus" ;;
         *) echo -e "${RED}Неверный выбор${NC}"; return 1 ;;
     esac
     
@@ -206,20 +210,24 @@ batch_convert() {
     echo "Выберите формат вывода:"
     echo "1) FLAC (lossless)"
     echo "2) FLAC Commercial (44.1kHz, 24-bit)"
-    echo "3) MP3 V0 VBR"
-    echo "4) MP3 320 CBR"
-    echo "5) MP3 192 CBR Commercial"
-    echo "6) Opus"
+    echo "3) FLAC Commercial 16-bit (44.1kHz, 16-bit)"
+    echo "4) MP3 V0 VBR (~245 kbps)"
+    echo "5) MP3 320 CBR"
+    echo "6) MP3 192 CBR Commercial (24-bit)"
+    echo "7) MP3 192 CBR Commercial 16-bit"
+    echo "8) Opus (~192 kbps)"
     echo
-    read -r -p "Формат (1-6): " format_choice
+    read -r -p "Формат (1-8): " format_choice
     
     case "$format_choice" in
         1) format="flac" ;;
         2) format="flac_commercial" ;;
-        3) format="mp3_v0" ;;
-        4) format="mp3_320" ;;
-        5) format="mp3_commercial" ;;
-        6) format="opus" ;;
+        3) format="flac_commercial_16-bit" ;;
+        4) format="mp3_v0" ;;
+        5) format="mp3_320" ;;
+        6) format="mp3_commercial" ;;
+        7) format="mp3_commercial_16-bit" ;;
+        8) format="opus" ;;
         *) echo -e "${RED}Неверный выбор${NC}"; return 1 ;;
     esac
     
@@ -371,9 +379,11 @@ show_help() {
     echo -e "${CYAN}Форматы конвертации:${NC}"
     echo "  flac    - FLAC lossless (-8 -V)"
     echo "  flac_commercial - FLAC Commercial (44.1kHz, 24-bit, -4)"
+    echo "  flac_commercial_16-bit - FLAC Commercial (44.1kHz, 16-bit, -4)"
     echo "  mp3_v0  - MP3 V0 VBR (~245 kbps)"
     echo "  mp3_320 - MP3 320 CBR"
     echo "  mp3_commercial - MP3 192 CBR Commercial (24-bit)"
+    echo "  mp3_commercial_16-bit - MP3 192 CBR Commercial (16-bit)"
     echo "  opus    - Opus 192 kbps"
     echo
     

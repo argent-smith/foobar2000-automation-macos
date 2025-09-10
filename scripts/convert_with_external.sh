@@ -14,7 +14,7 @@ ADVANCED_SCRIPT="$SCRIPT_DIR/convert_with_external_advanced.sh"
 if [[ $# -lt 2 ]]; then
     echo "Использование: $0 <input_file> <output_format>"
     echo
-    echo "Форматы: flac, mp3_v0, mp3_320, mp3_commercial, opus"
+    echo "Форматы: flac, flac_commercial, flac_commercial_16-bit, mp3_v0, mp3_320, mp3_commercial, mp3_commercial_16-bit, opus"
     echo
     echo "Примеры:"
     echo "  $0 file.wav mp3_320"

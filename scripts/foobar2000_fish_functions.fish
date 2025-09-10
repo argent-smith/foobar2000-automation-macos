@@ -8,7 +8,7 @@ end
 function foobar-convert
     if test (count $argv) -lt 2
         echo "Usage: foobar-convert <file> <format>"
-        echo "Formats: flac, flac_commercial, mp3_v0, mp3_320, mp3_commercial, opus"
+        echo "Formats: flac, flac_commercial, flac_commercial_16-bit, mp3_v0, mp3_320, mp3_commercial, mp3_commercial_16-bit, opus"
         return 1
     end
     
@@ -54,7 +54,7 @@ end
 function foobar-batch-convert
     if test (count $argv) -lt 2
         echo "Usage: foobar-batch-convert <folder> <format>"
-        echo "Formats: flac, flac_commercial, mp3_v0, mp3_320, mp3_commercial, opus"
+        echo "Formats: flac, flac_commercial, flac_commercial_16-bit, mp3_v0, mp3_320, mp3_commercial, mp3_commercial_16-bit, opus"
         return 1
     end
     

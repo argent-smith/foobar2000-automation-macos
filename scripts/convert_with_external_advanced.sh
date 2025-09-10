@@ -69,7 +69,7 @@ trap cleanup_on_exit EXIT INT TERM
 if [[ $# -lt 2 ]]; then
     echo "Использование: $0 <input_file> <output_format> [mode] [suffix] [--batch]"
     echo
-    echo "Форматы: flac, flac_commercial, mp3_v0, mp3_320, mp3_commercial, opus"
+    echo "Форматы: flac, flac_commercial, flac_commercial_16-bit, mp3_v0, mp3_320, mp3_commercial, mp3_commercial_16-bit, opus"
     echo
     echo "Режимы:"
     echo "  suffix - добавить суффикс к имени файла (по умолчанию)"
@@ -81,7 +81,7 @@ if [[ $# -lt 2 ]]; then
     echo
     echo "Примеры:"
     echo "  $0 file.wav mp3_320 suffix"
-    echo "  $0 file.mp3 mp3_commercial replace --batch"
+    echo "  $0 file.mp3 mp3_commercial_16-bit replace --batch"
     echo "  $0 file.flac opus interactive"
     exit 1
 fi
@@ -173,9 +173,11 @@ determine_output_file() {
                 case "$format" in
                     flac) suffix="_flac" ;;
                     flac_commercial) suffix="_flac_commercial" ;;
+                    flac_commercial_16-bit) suffix="_flac_commercial_16bit" ;;
                     mp3_v0) suffix="_v0" ;;
                     mp3_320) suffix="_320" ;;
                     mp3_commercial) suffix="_commercial" ;;
+                    mp3_commercial_16-bit) suffix="_commercial_16bit" ;;
                     opus) suffix="_opus" ;;
                     *) suffix="_${format}" ;;
                 esac
@@ -283,6 +285,59 @@ perform_conversion() {
                 fi
             fi
             ;;
+        flac_commercial_16-bit)
+            # FLAC Commercial 16-bit: Ensure 44.1kHz sample rate and 16-bit depth for commercial distribution
+            if command -v "$HOMEBREW_PREFIX/bin/ffmpeg" >/dev/null 2>&1; then
+                # Check if source is already 44.1kHz
+                local source_rate
+                source_rate=$(mediainfo --Inform="Audio;%SamplingRate%" "$input" 2>/dev/null || echo "unknown")
+                
+                if [[ "$source_rate" == "44100" ]]; then
+                    log_info "Source already at 44.1kHz, encoding directly to FLAC 16-bit"
+                    log_info "Команда: flac -4 -V --preserve-modtime --keep-foreign-metadata -T \"ARTIST=%artist%\" -T \"TITLE=%title%\" -T \"ALBUM=%album%\" -T \"DATE=%date%\" -T \"GENRE=%genre%\" -T \"TRACKNUMBER=%tracknumber%\" -T \"ALBUMARTIST=%albumartist%\" -T \"TOTALTRACKS=%totaltracks%\" -o \"$output\" \"$input\""
+                    if "$HOMEBREW_PREFIX/bin/flac" -4 -V --preserve-modtime --keep-foreign-metadata -T "ARTIST=%artist%" -T "TITLE=%title%" -T "ALBUM=%album%" -T "DATE=%date%" -T "GENRE=%genre%" -T "TRACKNUMBER=%tracknumber%" -T "ALBUMARTIST=%albumartist%" -T "TOTALTRACKS=%totaltracks%" -o "$output" "$input" 2>&1 | tee -a "$LOG_FILE"; then
+                        log_success "FLAC Commercial 16-bit конвертация завершена"
+                        return 0
+                    else
+                        log_error "Ошибка FLAC Commercial 16-bit конвертации"
+                        return 1
+                    fi
+                else
+                    # Resample to 44.1kHz and 16-bit first
+                    local temp_wav="$TEMP_DIR/$(basename "$input" .${input##*.})_44k_16bit.wav"
+                    
+                    log_info "Step 1: Resampling from ${source_rate}Hz to 44.1kHz and 16-bit with FFmpeg"
+                    log_info "Команда: ffmpeg -i \"$input\" -ar 44100 -c:a pcm_s16le \"$temp_wav\""
+                    if "$HOMEBREW_PREFIX/bin/ffmpeg" -i "$input" -ar 44100 -c:a pcm_s16le "$temp_wav" -y 2>&1 | tee -a "$LOG_FILE"; then
+                        log_info "Step 2: Encoding to FLAC"
+                        log_info "Команда: flac -4 -V --preserve-modtime --keep-foreign-metadata -T \"ARTIST=%artist%\" -T \"TITLE=%title%\" -T \"ALBUM=%album%\" -T \"DATE=%date%\" -T \"GENRE=%genre%\" -T \"TRACKNUMBER=%tracknumber%\" -T \"ALBUMARTIST=%albumartist%\" -T \"TOTALTRACKS=%totaltracks%\" -o \"$output\" \"$temp_wav\""
+                        if "$HOMEBREW_PREFIX/bin/flac" -4 -V --preserve-modtime --keep-foreign-metadata -T "ARTIST=%artist%" -T "TITLE=%title%" -T "ALBUM=%album%" -T "DATE=%date%" -T "GENRE=%genre%" -T "TRACKNUMBER=%tracknumber%" -T "ALBUMARTIST=%albumartist%" -T "TOTALTRACKS=%totaltracks%" -o "$output" "$temp_wav" 2>&1 | tee -a "$LOG_FILE"; then
+                            rm -f "$temp_wav"
+                            log_success "FLAC Commercial 16-bit конвертация завершена"
+                            return 0
+                        else
+                            rm -f "$temp_wav"
+                            log_error "Ошибка FLAC кодирования"
+                            return 1
+                        fi
+                    else
+                        log_error "Ошибка ресемплинга FFmpeg"
+                        return 1
+                    fi
+                fi
+            else
+                # Fallback: encode directly without resampling if FFmpeg not available
+                log_warning "FFmpeg not available, encoding without resampling to 16-bit"
+                log_info "Команда: flac -4 -V --preserve-modtime --keep-foreign-metadata -T \"ARTIST=%artist%\" -T \"TITLE=%title%\" -T \"ALBUM=%album%\" -T \"DATE=%date%\" -T \"GENRE=%genre%\" -T \"TRACKNUMBER=%tracknumber%\" -T \"ALBUMARTIST=%albumartist%\" -T \"TOTALTRACKS=%totaltracks%\" -o \"$output\" \"$input\""
+                if "$HOMEBREW_PREFIX/bin/flac" -4 -V --preserve-modtime --keep-foreign-metadata -T "ARTIST=%artist%" -T "TITLE=%title%" -T "ALBUM=%album%" -T "DATE=%date%" -T "GENRE=%genre%" -T "TRACKNUMBER=%tracknumber%" -T "ALBUMARTIST=%albumartist%" -T "TOTALTRACKS=%totaltracks%" -o "$output" "$input" 2>&1 | tee -a "$LOG_FILE"; then
+                    log_success "FLAC Commercial 16-bit конвертация завершена"
+                    return 0
+                else
+                    log_error "Ошибка FLAC Commercial 16-bit конвертации"
+                    return 1
+                fi
+            fi
+            ;;
         mp3_v0)
             log_info "Команда: lame -V 0 -h -m j --vbr-new --add-id3v2 --id3v2-only --preserve-modtime \"$input\" \"$output\""
             if "$HOMEBREW_PREFIX/bin/lame" -V 0 -h -m j --vbr-new --add-id3v2 --id3v2-only --preserve-modtime "$input" "$output" 2>&1 | tee -a "$LOG_FILE"; then
@@ -310,6 +365,16 @@ perform_conversion() {
                 return 0
             else
                 log_error "Ошибка MP3 Commercial конвертации"
+                return 1
+            fi
+            ;;
+        mp3_commercial_16-bit)
+            log_info "Команда: lame -b 192 -h -m j --cbr --resample 44.1 --bitwidth 16 --add-id3v2 --id3v2-only --preserve-modtime \"$input\" \"$output\""
+            if "$HOMEBREW_PREFIX/bin/lame" -b 192 -h -m j --cbr --resample 44.1 --bitwidth 16 --add-id3v2 --id3v2-only --preserve-modtime "$input" "$output" 2>&1 | tee -a "$LOG_FILE"; then
+                log_success "MP3 Commercial 16-bit конвертация завершена"
+                return 0
+            else
+                log_error "Ошибка MP3 Commercial 16-bit конвертации"
                 return 1
             fi
             ;;

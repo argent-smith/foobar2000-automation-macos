@@ -345,7 +345,7 @@ show_post_update() {
     echo "  bash ~/Library/foobar2000-v2/foobar_menu_fish.sh"
     echo
     echo -e "${BLUE}Available formats now include:${NC}"
-    echo "  flac, flac_commercial, mp3_v0, mp3_320, mp3_commercial, opus"
+    echo "  flac, flac_commercial, flac_commercial_16-bit, mp3_v0, mp3_320, mp3_commercial, mp3_commercial_16-bit, opus"
     echo
     if [[ "$CREATE_BACKUP" == "true" ]]; then
         echo -e "${YELLOW}Backup created in:${NC} $BACKUP_DIR"
